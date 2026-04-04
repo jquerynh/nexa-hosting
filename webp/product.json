@@ -1,0 +1,11 @@
+[
+  { "nomor": 1, "img": "https://cdn.jsdelivr.net/gh/cdn-aryatqhio/img@main/tampilan/1.jpg", "name": "MediaFire ZIP", "btn": "orange" },
+  { "nomor": 2, "img": "https://cdn.jsdelivr.net/gh/cdn-aryatqhio/img@main/tampilan/2.jpg", "name": "MediaFire MP4", "btn": "orange" },
+  { "nomor": 4, "img": "https://cdn.jsdelivr.net/gh/cdn-aryatqhio/img@main/tampilan/4.jpg", "name": "Grup WA V1", "btn": "orange" },
+  { "nomor": 5, "img": "https://cdn.jsdelivr.net/gh/cdn-aryatqhio/img@main/tampilan/5.jpg", "name": "Grup WA V2", "btn": "orange" },
+  { "nomor": 8, "img": "https://cdn.jsdelivr.net/gh/alex-hostingg/img@main/IMG_20260401_052654.jpg", "name": "Free Fire Claim Reward", "btn": "orange" },
+  { "nomor": 9, "img": "https://cdn.jsdelivr.net/gh/cdn-aryatqhio/img@main/tampilan/9.jpg", "name": "Free Fire Beta", "btn": "orange" },
+  { "nomor": 14, "img": "https://cdn.jsdelivr.net/gh/cdn-aryatqhio/img@main/tampilan/14.jpg", "name": "Videy V1", "btn": "blue" },
+  { "nomor": 16, "img": "https://cdn.jsdelivr.net/gh/cdn-aryatqhio/img@main/tampilan/16.jpg", "name": "YouTube V1", "btn": "blue" },
+  { "nomor": 23, "img": "https://cdn.jsdelivr.net/gh/cdn-aryatqhio/img@main/tampilan/23.jpg", "name": "Grup Massager 18+", "btn": "blue" }
+]
