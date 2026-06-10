@@ -1,0 +1,1 @@
+"use strict";function genVNVoucherReminderMsg(e,n,r){var t="";if(1==r.isThirdPartyMerchant&&"1Pay"==r.paymentChannel){$(".confirm-content").css("height","350px");t=e+" "+r.channelPrice+".<br/>",t+="<br/>"+n+"<br/><br/>"}else $(".confirm-content").css("height","260px");return t}
