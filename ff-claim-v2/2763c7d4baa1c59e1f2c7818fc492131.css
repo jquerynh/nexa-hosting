@@ -1,0 +1,351 @@
+.link-box-navbar-titlegp {
+    padding-top: 10px;
+    padding-bottom: 2px;
+    font-size: 17px;
+    font-weight: 300;
+    margin-left: 30px
+}
+.popup-box-login-google {
+background:#fff;
+max-width:330px;
+height:auto;
+position:relative;
+margin:50px auto;
+margin-top:10%;
+text-align:center;
+font-family: 'Open Sans', sans-serif;
+color:#000;
+border-radius:5px;
+}
+.load-login-img {
+width: 10%;
+height: auto;
+margin-top: 30px;
+margin-bottom: 5px;
+animation: mymoves 1s infinite linear;
+}
+
+@keyframes mymoves {
+100% {
+transform: rotate(360deg);
+}
+}
+
+
+.header-google {
+    background: #fff;
+    width: 100%;
+    margin-bottom: 10px;
+    padding-top: 20px;
+    border-radius: 10px;
+    position: relative;
+}
+.header-google img {
+    width: 49px;
+    padding-top: 0px;
+    margin-top: -6px;
+}
+.box-google {
+    width: 90%;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+.txt-login-google {
+    color: #000;
+    font-size: 25px;
+    font-family: "Google Sans", roboto, "Noto Sans Myanmar UI", arial, sans-serif;
+    font-weight: normal;
+    text-align: left;
+}
+.txt-login-google-desc {
+    padding-top: 5px;
+    padding-Bottom: 10px;
+    font-size: 15px;
+    font-family: "Google Sans", roboto, "Noto Sans Myanmar UI", arial, sans-serif;
+    font-weight: normal;
+    text-align: left;
+}
+input {
+    background: #fff;
+}
+#form {
+    width: 40vw;
+    margin: 0 auto;
+    margin-top: 50px;
+}
+.input-box.active-grey {
+    .input-1 {
+        border: 1px solid #dadce0;
+    }
+    .input-label {
+        color: #80868b;
+        top: -8px;
+        background: #fff;
+        font-size: 11px;
+        transition: 250ms;
+        svg {
+            position: relative;
+            width: 11px;
+            height: 11px;
+            top: 2px;
+            transition: 250ms;
+        }
+    }
+}
+.input-box {
+    position: relative;
+    margin: 10px 0;
+    .input-label {
+        position: absolute;
+        color: #80868b;
+        font-size: 16px;
+        font-weight: 400;
+        max-width: calc(100% - (2 * 8px));
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        left: 8px;
+        top: 13px;
+        padding: 0 8px;
+        transition: 250ms;
+        user-select: none;
+        pointer-events: none;
+        svg {
+            position: relative;
+            width: 15px;
+            height: 15px;
+            top: 2px;
+            transition: 250ms;
+        }
+    }
+    .input-1 {
+        box-sizing: border-box;
+        height: 50px;
+        width: 100%;
+        border-radius: 4px;
+        color: #202124;
+        border: 1px solid #dadce0;
+        padding: 13px 15px;
+        transition: 250ms;
+        &:focus {
+            outline: none;
+            border: 2px solid #1a73e8;
+            transition: 250ms;
+        }
+    }
+}
+
+.input-box.error {
+    .input-label {
+        color: #f44336;
+        top: -8px;
+        background: #fff;
+        font-size: 11px;
+        transition: 250ms;
+    }
+    .input-1 {
+        border: 2px solid #f44336;
+    }
+}
+.input-box.focus,
+.input-box.active {
+    .input-label {
+        color: #1a73e8;
+        top: -8px;
+        background: #fff;
+        font-size: 11px;
+        transition: 250ms;
+        svg {
+            position: relative;
+            width: 11px;
+            height: 11px;
+            top: 2px;
+            transition: 250ms;
+        }
+    }
+}
+.input-box.active {
+    .input-1 {
+        border: 2px solid #1a73e8;
+    }
+}
+.pull-right {
+    float: right;
+}
+.clear {
+    clear: both;
+}
+.btn-forgot-google {
+    background: #fff;
+    width: auto;
+    height: auto;
+    margin: 0px;
+    margin-top: -4px;
+    padding: 10px;
+    padding-left: 0;
+    color: #3166d3;
+    font-size: 14.5px;
+    font-family: "Google Sans", roboto, "Noto Sans Myanmar UI", arial, sans-serif;
+    font-weight: bold;
+    letter-spacing: .25px;
+    text-align: left;
+    border: none;
+    outline: none;
+    float: left;
+}
+.btn-not-computer {
+    background: #fff;
+    width: auto;
+    height: auto;
+    margin: 0px;
+    margin-top: 39px;
+    padding: 10px;
+    padding-left: 0;
+    color: #737373;
+    font-size: 12.5px;
+    font-family: "Google Sans", roboto, "Noto Sans Myanmar UI", arial, sans-serif;
+    font-weight: normal;
+    letter-spacing: .25px;
+    text-align: left;
+    border: none;
+    outline: none;
+    margin-bottom: 9px;
+}
+.notify-google {
+    background: #fff;
+    width: auto;
+    height: auto;
+    margin: 0px;
+    margin-top: -4px;
+    padding: 10px;
+    padding-left: 0;
+    color: #3166d3;
+    font-size: 14.5px;
+    font-family: "Google Sans", roboto, "Noto Sans Myanmar UI", arial, sans-serif;
+    font-weight: bold;
+    letter-spacing: .25px;
+    text-align: left;
+    border: none;
+    outline: none;
+}
+.notify-google span {
+    color: #1a73e8;
+    font-weight: inherit;
+}
+.btn-create-google {
+    background: #fff;
+    width: auto;
+    height: auto;
+    margin: 0px;
+    padding: 5px;
+    padding-left: 0;
+    color: #1a73e8;
+    font-size: 14.5px;
+    font-family: "Google Sans", roboto, "Noto Sans Myanmar UI", arial, sans-serif;
+    font-weight: normal;
+    letter-spacing: .25px;
+    text-align: left;
+    border: none;
+    outline: none;
+    float: left;
+}
+.btn-login-google {
+    background: #1a73e8;
+    width: 28%;
+    height: auto;
+    margin: 0px;
+    padding: 10px;
+    color: #fff;
+    font-size: 14px;
+    font-family: "Google Sans", roboto, "Noto Sans Myanmar UI", arial, sans-serif;
+    font-weight: normal;
+    letter-spacing: .25px;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    float: right;
+    margin-top: 0px;
+    border-radius: 17px;
+}
+.form-group-showhide {
+	width: 50px;
+	height: 73%;
+	margin-left: 88%;
+	position: absolute;
+	z-index: 9999999;
+	cursor: pointer;
+}
+.form-group-showhide i {
+	margin-top: 13px;
+	margin-right: 20px;
+	font-size: 25px;
+}
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+.loadgoogle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 383px
+  }
+.ball {
+    width: 13px;
+    height: 13px;
+    border-radius: 11px;
+    margin: 0 6px;
+    animation: 2s bounce ease infinite;
+}
+  
+.blue {
+    background-color: #4285F5;
+}
+  
+.red {
+    background-color: #EA4436;
+    animation-delay: .25s;
+}
+  
+.yellow {
+    background-color: #FBBD06;
+    animation-delay: .5s;
+}
+  
+.green {
+    background-color: #34A952;
+    animation-delay: .75s;
+}
+  
+@keyframes bounce {  
+      50% {
+          transform: translateY(25px);
+      }
+}
+.second-sandi-google, .first-sandi-google, .first-email-google, .second-email-google {
+    color: rgb(213, 0, 0);
+    font-size: 13px;
+    /* text-align: left; */
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 16px;
+    margin-bottom: 13px;
+    justify-items: center;
+}
+.second-sandi-google svg, .first-sandi-google svg, .first-email-google svg, .second-email-google svg {
+    margin-bottom: -2px;
+}
+@media only screen and (max-width:600px) {
+    .footer-language-google,
+    .footer-menu-google {
+        margin-top: 70%;
+    }
+    .footer-language-account-google,
+    .footer-menu-account-google {
+        margin-top: 90%;
+    }
+}
