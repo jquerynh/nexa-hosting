@@ -1,0 +1,1580 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pohon Harapan | Eksplorasi Luar Angkasa - Alqhifari</title>
+    <meta name="theme-color" content="#05080F" />
+    <meta name="msapplication-navbutton-color" content="#05080F" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        :root {
+            --paper: #0B0F1A;
+            --paper-deep: #05080F;
+            --ink: #E8F0FE;
+            --forest: #2A4B7C;
+            --forest-deep: #0F2440;
+            --moss: #5B8DBF;
+            --canopy: #7BA9D9;
+            --sun: #F5C542;
+            --sun-deep: #D49A1A;
+            --soil: #3A4A6B;
+            --coral: #E86850;
+            --card: rgba(18, 28, 48, 0.88);
+            --radius-lg: 22px;
+            --radius-md: 14px;
+            --shadow-soft: 0 18px 50px rgba(0, 0, 0, 0.6), 0 4px 14px rgba(0, 0, 0, 0.4);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+            }
+        }
+
+        html { background: #05080F; }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Work Sans', sans-serif;
+            color: var(--ink);
+            background: radial-gradient(circle at 20% 30%, rgba(42, 75, 124, 0.4), transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(245, 197, 66, 0.15), transparent 45%),
+                        linear-gradient(160deg, #0B0F1A 0%, #05080F 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 14px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        #dust-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+        :focus-visible { outline: 3px solid var(--sun-deep); outline-offset: 3px; border-radius: 6px; }
+
+        .meteor-layer { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .meteor {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            top: -10%;
+            opacity: 0;
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.1);
+            animation: meteorFall linear infinite;
+        }
+        .meteor::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 0;
+            width: 120px;
+            height: 1.5px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.85), rgba(245,197,66,0.4) 40%, transparent);
+            transform: translateY(-50%) rotate(0deg);
+            transform-origin: right center;
+        }
+        @keyframes meteorFall {
+            0%   { transform: translate(0, 0) rotate(215deg); opacity: 0; }
+            5%   { opacity: 1; }
+            35%  { opacity: 1; }
+            45%  { transform: translate(-620px, 620px) rotate(215deg); opacity: 0; }
+            100% { transform: translate(-620px, 620px) rotate(215deg); opacity: 0; }
+        }
+        .meteor.m1 { left: 78%; animation-duration: 6.5s; animation-delay: 0.4s; }
+        .meteor.m2 { left: 30%; animation-duration: 9s; animation-delay: 3.2s; }
+        .meteor.m3 { left: 55%; animation-duration: 7.8s; animation-delay: 5.6s; }
+        .meteor.m4 { left: 10%; animation-duration: 11s; animation-delay: 1.8s; }
+
+        .blog-container {
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+            background: var(--card);
+            backdrop-filter: blur(14px);
+            border-radius: var(--radius-lg);
+            padding: 30px 26px 40px;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            min-height: 600px;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .blog-container::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .video-header {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto 20px auto;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            aspect-ratio: 16 / 9;
+            background: #000;
+        }
+
+        .video-header video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .video-header .video-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px 20px 14px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+            pointer-events: none;
+        }
+
+        .video-header .video-overlay .video-title {
+            color: #fff;
+            font-family: 'Fraunces', serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
+        }
+
+        .video-header .video-overlay .video-title i {
+            color: var(--sun-deep);
+            margin-right: 6px;
+        }
+
+        @media (max-width: 700px) {
+            .blog-container { padding: 22px 16px 30px; border-radius: 18px; }
+            .video-header { border-radius: 14px; max-width: 100%; }
+            .video-header .video-overlay .video-title { font-size: 0.8rem; }
+        }
+
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeSlideDown {
+            from { opacity: 0; transform: translateY(-16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes popIn {
+            0%   { opacity: 0; transform: scale(0.85); }
+            60%  { opacity: 1; transform: scale(1.05); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes bounceIn {
+            0%   { transform: scale(0.7) rotate(-8deg); opacity: 0; }
+            60%  { transform: scale(1.08) rotate(2deg); opacity: 1; }
+            100% { transform: scale(1) rotate(0); opacity: 1; }
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(245, 197, 66, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(245, 197, 66, 0.6), 0 0 60px rgba(245, 197, 66, 0.2); }
+        }
+        .anim-in {
+            animation: fadeSlideUp 0.5s cubic-bezier(.34,1.56,.64,1) both;
+        }
+        .anim-in-down { animation: fadeSlideDown 0.5s ease both; }
+        .anim-pop { animation: popIn 0.45s cubic-bezier(.34,1.56,.64,1) both; }
+        .anim-bounce { animation: bounceIn 0.6s cubic-bezier(.34,1.56,.64,1) both; }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            position: relative;
+            z-index: 5;
+            margin-bottom: 6px;
+        }
+
+        .logo-sekolah {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 7px 16px 7px 10px;
+            border-radius: 12px;
+            border-left: 4px solid var(--sun-deep);
+            box-shadow: 0 2px 14px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(4px);
+        }
+
+        .logo-sekolah img { width: 32px; height: 32px; object-fit: contain; border-radius: 8px; }
+        .logo-sekolah span {
+            color: var(--ink);
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .top-bar-right { display: flex; align-items: center; gap: 8px; }
+
+        .menu-dots-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.4rem;
+            color: var(--ink);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 14px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            font-weight: 700;
+        }
+        .menu-dots-btn:hover { background: var(--sun-deep); color: #0B0F1A; transform: scale(1.05); }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 52px;
+            right: 0;
+            background: #0F1A2B;
+            border-radius: 16px;
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.6);
+            padding: 16px 20px;
+            min-width: 240px;
+            z-index: 100;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: left;
+        }
+        .dropdown-menu.show { display: block; }
+
+        .dropdown-menu .guru-item {
+            display: flex; align-items: center; gap: 14px; padding: 8px 4px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .dropdown-menu .guru-item:last-child { border-bottom: none; }
+        .dropdown-menu .guru-item img {
+            width: 55px; height: 55px; border-radius: 50%; object-fit: cover; border: 2px solid var(--sun-deep);
+        }
+        .dropdown-menu .guru-item .guru-info { font-size: 0.85rem; line-height: 1.3; color: #C8D8F0; }
+        .dropdown-menu .guru-item .guru-info .nama { font-weight: 700; color: #fff; }
+        .dropdown-menu .guru-item .guru-info .gelar { color: var(--sun-deep); font-weight: 600; font-size: 0.75rem; }
+        .dropdown-menu .guru-item .guru-info .kelas { font-size: 0.7rem; color: #8899BB; margin-top: 2px; }
+
+        .tree-widget {
+            display: flex; flex-direction: column; align-items: center; gap: 2px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 8px 14px 6px;
+            box-shadow: 0 2px 14px rgba(0, 0, 0, 0.3);
+            min-width: 88px;
+            transition: transform 0.4s cubic-bezier(.34,1.56,.64,1);
+            backdrop-filter: blur(4px);
+        }
+        .tree-widget.pulse { animation: popIn 0.5s cubic-bezier(.34,1.56,.64,1); }
+        .tree-widget svg { width: 52px; height: 52px; overflow: visible; }
+        .tree-widget .tree-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.4px;
+            color: var(--canopy);
+            font-weight: 700;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .stage-part {
+            opacity: 0;
+            transform-origin: center bottom;
+            transition: opacity 0.6s ease, transform 0.6s cubic-bezier(.34, 1.56, .64, 1);
+        }
+        .stage-part.stem { transform: scaleY(0.2); }
+
+        .tw-stage-0 .p-soil { opacity: 1; }
+        .tw-stage-0 .p-seed { opacity: 1; }
+        .tw-stage-1 .p-soil, .tw-stage-1 .p-seed, .tw-stage-1 .p-stem1, .tw-stage-1 .p-leaf1 { opacity: 1; }
+        .tw-stage-1 .p-stem1 { transform: scaleY(1); }
+        .tw-stage-2 .p-soil, .tw-stage-2 .p-stem2, .tw-stage-2 .p-leaf1, .tw-stage-2 .p-leaf2, .tw-stage-2 .p-canopy1 { opacity: 1; }
+        .tw-stage-2 .p-stem2 { transform: scaleY(1); }
+        .tw-stage-3 .p-soil, .tw-stage-3 .p-stem2, .tw-stage-3 .p-leaf1, .tw-stage-3 .p-leaf2,
+        .tw-stage-3 .p-canopy1, .tw-stage-3 .p-canopy2, .tw-stage-3 .p-canopy3, .tw-stage-3 .p-fruit { opacity: 1; }
+        .tw-stage-3 .p-stem2 { transform: scaleY(1); }
+
+        #loading-screen {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 22px; padding: 70px 20px; min-height: 420px;
+        }
+        .loader-wrapper { position: relative; width: 74px; height: 74px; }
+        .loader-seed {
+            width: 100%; height: 100%; border-radius: 50%;
+            border: 5px solid rgba(42, 75, 124, 0.2);
+            border-top-color: var(--sun-deep);
+            animation: spin 1.1s cubic-bezier(.5, 0, .5, 1) infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loader-text {
+            font-family: 'Fraunces', serif; font-weight: 600; font-style: italic;
+            color: var(--canopy); font-size: 1.15rem; letter-spacing: 0.3px;
+        }
+        .progress-bar-bg { width: 230px; height: 6px; background: rgba(255, 255, 255, 0.08); border-radius: 10px; overflow: hidden; }
+        .progress-bar-fill {
+            height: 100%; width: 0%;
+            background: linear-gradient(90deg, var(--canopy), var(--sun-deep));
+            border-radius: 10px;
+            transition: width 0.35s cubic-bezier(.4, 0, .2, 1);
+        }
+
+        .btn-masuk-wrapper {
+            margin-top: 8px;
+            display: flex;
+            justify-content: center;
+        }
+        .btn-masuk {
+            background: linear-gradient(135deg, var(--sun-deep), var(--sun));
+            border: none;
+            padding: 18px 56px;
+            border-radius: 15px;
+            font-size: 1.5rem;
+            font-family: 'Fraunces', serif;
+            font-weight: 700;
+            color: #0B0F1A;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #a67a1a, 0 14px 40px rgba(245, 197, 66, 0.3);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            letter-spacing: 0.5px;
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+        .btn-masuk:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 0 #a67a1a, 0 20px 50px rgba(245, 197, 66, 0.5);
+        }
+        .btn-masuk:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #a67a1a;
+        }
+        .btn-masuk i {
+            font-size: 1.8rem;
+        }
+
+        #intro-screen {
+            display: none; flex-direction: column; align-items: center; text-align: center;
+            gap: 18px; padding: 14px 6px 6px;
+        }
+        .eyebrow {
+            font-family: 'Space Mono', monospace; font-size: 0.72rem; letter-spacing: 2.5px;
+            text-transform: uppercase; color: var(--sun-deep); font-weight: 700;
+        }
+        .intro-title {
+            font-family: 'Fraunces', serif; font-weight: 900; font-size: 2.6rem; line-height: 1.05;
+            color: #fff; letter-spacing: -0.5px;
+        }
+        .intro-title em { font-style: italic; color: var(--canopy); font-weight: 500; }
+        .intro-text {
+            max-width: 560px; background: rgba(0, 0, 0, 0.4); padding: 22px 26px;
+            border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.06);
+            color: var(--ink); font-size: 1.02rem; line-height: 1.8;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3); text-align: left;
+        }
+        .intro-text strong { color: var(--canopy); }
+        .intro-text .highlight { color: var(--sun-deep); font-weight: 700; }
+
+        .btn-mulai {
+            margin-top: 2px;
+            background: linear-gradient(135deg, var(--forest), var(--forest-deep));
+            border: none; padding: 16px 50px; border-radius: 10px;
+            font-size: 1.35rem; font-family: 'Fraunces', serif; font-weight: 700; color: #fff;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #0a1628, 0 14px 34px rgba(0, 0, 0, 0.5);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            display: inline-flex; align-items: center; gap: 12px; letter-spacing: 0.4px;
+        }
+        .btn-mulai:hover { transform: translateY(-2px); box-shadow: 0 8px 0 #0a1628, 0 18px 40px rgba(0, 0, 0, 0.6); }
+        .btn-mulai:active { transform: translateY(4px); box-shadow: 0 2px 0 #0a1628; }
+
+        #menu-screen {
+            display: none; flex-direction: column; align-items: center; gap: 22px; padding: 20px 6px; width: 100%;
+        }
+        .menu-title { font-family: 'Fraunces', serif; font-size: 1.9rem; font-weight: 700; color: #fff; text-align: center; }
+        .menu-title i { color: var(--sun-deep); margin-right: 8px; }
+
+        .menu-grid {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; width: 100%; max-width: 620px;
+        }
+        .menu-card {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 16px; padding: 24px 18px; width: 180px; cursor: pointer;
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(.34, 1.56, .64, 1);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            text-align: center; flex: 1 1 150px;
+            opacity: 1;
+            backdrop-filter: blur(4px);
+        }
+        .menu-card:hover { transform: translateY(-8px) scale(1.02); border-color: var(--sun-deep); box-shadow: 0 14px 34px rgba(0, 0, 0, 0.4); }
+        .menu-card:active { transform: scale(0.96); }
+        .menu-card .menu-icon { font-size: 2.6rem; margin-bottom: 8px; display: block; }
+        .menu-card .menu-label { font-family: 'Fraunces', serif; font-weight: 700; color: #fff; font-size: 1.12rem; }
+        .menu-card .menu-desc { font-size: 0.8rem; color: #8899BB; margin-top: 5px; line-height: 1.4; }
+        .menu-card.quiz-card { border-color: var(--sun-deep); background: rgba(245, 197, 66, 0.08); }
+        .menu-card.quiz-card .menu-label { color: var(--sun-deep); }
+        .menu-card.tatasurya-card { border-color: var(--canopy); background: rgba(123, 169, 217, 0.08); }
+        .menu-card.tatasurya-card .menu-label { color: var(--canopy); }
+        .menu-card.info-card { border-color: var(--coral); background: rgba(232, 104, 80, 0.08); }
+        .menu-card.info-card .menu-label { color: var(--coral); }
+        .menu-card.game-card { border-color: #7ef7ff; background: rgba(126, 247, 255, 0.08); }
+        .menu-card.game-card .menu-label { color: #7ef7ff; }
+
+        #materi-screen { display: none; flex-direction: column; align-items: center; gap: 18px; padding: 18px 6px; width: 100%; }
+        .materi-box {
+            background: rgba(0, 0, 0, 0.4); padding: 26px 28px; border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.06); color: var(--ink); font-size: 1.02rem; line-height: 1.85;
+            width: 100%; max-width: 600px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); text-align: left;
+            opacity: 1;
+        }
+        .materi-box h3 { font-family: 'Fraunces', serif; color: #fff; margin-bottom: 12px; font-size: 1.35rem; }
+        .materi-box ul { list-style: none; padding-left: 0; margin-top: 6px; }
+        .materi-box ul li { padding: 8px 0 8px 30px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); position: relative; }
+        .materi-box ul li::before {
+            content: "\f06c"; font-family: "Font Awesome 6 Free"; font-weight: 900;
+            position: absolute; left: 0; top: 9px; color: var(--sun-deep); font-size: 0.85rem;
+        }
+
+        .btn-back {
+            background: rgba(255, 255, 255, 0.06);
+            border: 2px solid var(--canopy);
+            padding: 10px 28px; border-radius: 60px;
+            color: var(--ink); font-weight: 700; cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex; align-items: center; gap: 8px;
+            opacity: 1;
+        }
+        .btn-back:hover { background: var(--canopy); color: #0B0F1A; transform: scale(1.03); }
+
+        #quiz-screen { display: none; flex-direction: column; align-items: center; gap: 18px; padding: 14px 4px; width: 100%; }
+        .quiz-header {
+            font-family: 'Fraunces', serif; font-size: 1.55rem; color: #fff; font-weight: 700;
+            background: rgba(0, 0, 0, 0.3); padding: 10px 30px; border-radius: 16px;
+            width: 100%; text-align: center; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+        }
+        .quiz-subheader { font-size: 0.98rem; color: #8899BB; text-align: center; max-width: 480px; }
+        .quiz-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin: 2px 0; width: 100%; max-width: 600px; }
+        .quiz-item {
+            background: rgba(255, 255, 255, 0.06); border-radius: 16px; padding: 12px 10px 14px; width: 165px;
+            cursor: pointer; border: 2px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(.34, 1.56, .64, 1);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center;
+            opacity: 1;
+            backdrop-filter: blur(4px);
+        }
+        .quiz-item:hover:not(.disabled) { transform: translateY(-6px) scale(1.03); border-color: var(--sun-deep); background: rgba(255, 255, 255, 0.1); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4); }
+        .quiz-item:active:not(.disabled) { transform: scale(0.95); }
+        .quiz-item img { width: 100%; height: 112px; object-fit: cover; border-radius: 12px; background: var(--paper-deep); transition: transform 0.3s ease; }
+        .quiz-item:hover:not(.disabled) img { transform: scale(1.04); }
+        .quiz-item .item-name { color: var(--ink); font-weight: 600; font-size: 0.92rem; background: rgba(255, 255, 255, 0.06); padding: 4px 14px; border-radius: 60px; }
+        .quiz-item.correct-flash { border-color: var(--canopy); background: rgba(91, 141, 191, 0.2); }
+        .quiz-item.wrong-flash { border-color: var(--coral); background: rgba(232, 104, 80, 0.15); }
+        .quiz-item.disabled { cursor: not-allowed; opacity: 0.5; }
+        .quiz-item.disabled:hover { transform: none; border-color: rgba(255, 255, 255, 0.08); }
+        .quiz-item.option-abcd { width: 100%; max-width: 400px; flex-direction: row; padding: 13px 18px; gap: 14px; justify-content: flex-start; }
+        .quiz-item.option-abcd .letter { font-family: 'Fraunces', serif; font-weight: 900; color: var(--sun-deep); font-size: 1.2rem; min-width: 28px; }
+        .quiz-item.option-abcd .text { color: var(--ink); font-weight: 500; }
+
+        .notif {
+            background: rgba(0, 0, 0, 0.3); padding: 14px 26px; border-radius: 16px;
+            font-size: 1.05rem; font-weight: 500; color: var(--ink); border-left: 6px solid var(--canopy);
+            width: 100%; max-width: 480px; text-align: center; transition: all 0.35s ease; min-height: 56px;
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+        .notif.salah { border-left-color: var(--coral); background: rgba(232, 104, 80, 0.15); animation: shake 0.45s ease; }
+        .notif.benar { border-left-color: var(--canopy); background: rgba(91, 141, 191, 0.15); animation: pop 0.4s ease; }
+        @keyframes shake { 0%,100% { transform: translateX(0);} 25% { transform: translateX(-10px);} 75% { transform: translateX(10px);} }
+        @keyframes pop { 0% { transform: scale(0.92); opacity:0.6;} 60% { transform: scale(1.05);} 100% { transform: scale(1); opacity:1;} }
+
+        .btn-next {
+            background: linear-gradient(135deg, var(--forest), var(--forest-deep));
+            border: none; padding: 14px 40px; border-radius: 60px; font-size: 1.15rem; font-weight: 700;
+            font-family: 'Fraunces', serif; color: #fff; cursor: pointer;
+            transition: all 0.3s cubic-bezier(.34, 1.56, .64, 1);
+            display: inline-flex; align-items: center; gap: 12px;
+            box-shadow: 0 6px 0 #0a1628, 0 8px 24px rgba(0, 0, 0, 0.4);
+            opacity: 0; transform: scale(0.95); pointer-events: none;
+        }
+        .btn-next.show { opacity: 1; transform: scale(1); pointer-events: auto; }
+        .btn-next:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 0 #0a1628, 0 12px 32px rgba(0, 0, 0, 0.5); }
+        .btn-next:active { transform: translateY(4px) scale(0.98); box-shadow: 0 2px 0 #0a1628; }
+
+        .quiz-progress { display: flex; gap: 10px; margin-top: 2px; }
+        .progress-dot { width: 11px; height: 11px; border-radius: 50%; background: rgba(255, 255, 255, 0.1); transition: all 0.4s ease; }
+        .progress-dot.active { background: var(--sun-deep); box-shadow: 0 0 20px rgba(245, 197, 66, 0.3); transform: scale(1.3); }
+        .progress-dot.completed { background: var(--canopy); }
+
+        #complete-screen { display: none; flex-direction: column; align-items: center; text-align: center; gap: 16px; padding: 26px 8px; }
+        #complete-screen .complete-icon { font-size: 4.4rem; }
+        #complete-screen h2 { font-family: 'Fraunces', serif; font-size: 2.2rem; color: #fff; }
+        #complete-screen p { color: #8899BB; font-size: 1.05rem; max-width: 420px; }
+        .score-chip {
+            font-family: 'Space Mono', monospace; background: rgba(255, 255, 255, 0.06); color: var(--sun-deep);
+            padding: 8px 20px; border-radius: 60px; font-weight: 700; font-size: 0.9rem; letter-spacing: 0.5px;
+        }
+        .btn-retry {
+            background: linear-gradient(135deg, var(--forest), var(--forest-deep));
+            border: none; padding: 14px 44px; border-radius: 60px; font-size: 1.15rem;
+            font-family: 'Fraunces', serif; font-weight: 700; color: #fff; cursor: pointer;
+            transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 12px;
+            box-shadow: 0 6px 0 #0a1628, 0 14px 34px rgba(0, 0, 0, 0.5); margin-top: 6px;
+            opacity: 1;
+        }
+        .btn-retry:hover { transform: translateY(-2px); box-shadow: 0 8px 0 #0a1628, 0 18px 40px rgba(0, 0, 0, 0.6); }
+        .btn-retry:active { transform: translateY(4px); box-shadow: 0 2px 0 #0a1628; }
+
+        .music-indicator {
+            position: absolute; bottom: 12px; left: 16px; z-index: 30;
+            color: rgba(255, 255, 255, 0.4); font-size: 0.68rem; display: flex; align-items: center; gap: 6px;
+        }
+        .music-indicator button { background: none; border: none; color: inherit; font: inherit; cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 2px; }
+        .music-indicator i { font-size: 0.78rem; }
+        .music-indicator.playing i { animation: musicPulse 1.5s ease-in-out infinite; }
+        @keyframes musicPulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+        #tatasurya-screen { display: none; flex-direction: column; align-items: center; gap: 16px; padding: 14px 4px; width: 100%; }
+        .tatasurya-wrap {
+            position: relative;
+            width: clamp(260px, 88vw, 420px);
+            height: clamp(260px, 88vw, 420px);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .ts-stars { position: absolute; inset: -20px; border-radius: 50%; overflow: hidden; pointer-events: none; }
+        .ts-star { position: absolute; width: 2px; height: 2px; background: #fff; border-radius: 50%; opacity: 0.5; animation: twinkle 2.4s ease-in-out infinite; }
+        @keyframes twinkle { 0%,100% { opacity: 0.15; } 50% { opacity: 0.9; } }
+
+        .sun-core {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 34px; height: 34px; border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #FFE9A8, var(--sun) 45%, var(--sun-deep) 90%);
+            box-shadow: 0 0 18px 6px rgba(245, 197, 66, 0.55), 0 0 40px 14px rgba(245, 197, 66, 0.25);
+            animation: sunPulse 3.2s ease-in-out infinite;
+            z-index: 5;
+            cursor: pointer;
+        }
+        @keyframes sunPulse { 0%,100% { box-shadow: 0 0 18px 6px rgba(245,197,66,0.55), 0 0 40px 14px rgba(245,197,66,0.25); } 50% { box-shadow: 0 0 24px 9px rgba(245,197,66,0.7), 0 0 54px 20px rgba(245,197,66,0.35); } }
+
+        .ts-orbit {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            border: 1px dashed rgba(255, 255, 255, 0.14);
+            border-radius: 50%;
+            animation: tsSpin linear infinite;
+        }
+        @keyframes tsSpin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+        .ts-planet {
+            position: absolute; top: 0; left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 6px rgba(0,0,0,0.4);
+            transition: box-shadow 0.2s ease;
+        }
+        .ts-planet:hover, .ts-planet:focus-visible { box-shadow: 0 0 0 3px rgba(245, 197, 66, 0.55); }
+        .ts-planet.has-ring::after {
+            content: '';
+            position: absolute; top: 50%; left: 50%;
+            width: 220%; height: 60%;
+            border: 1.5px solid rgba(228, 210, 163, 0.75);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) rotate(-18deg);
+        }
+
+        .ts-orbit-mercury { width: 76px; height: 76px; animation-duration: 5.5s; }
+        .ts-orbit-venus    { width: 112px; height: 112px; animation-duration: 8.5s; }
+        .ts-orbit-earth    { width: 152px; height: 152px; animation-duration: 12s; }
+        .ts-orbit-mars     { width: 192px; height: 192px; animation-duration: 16s; }
+        .ts-orbit-jupiter  { width: 240px; height: 240px; animation-duration: 24s; }
+        .ts-orbit-saturn   { width: 288px; height: 288px; animation-duration: 32s; }
+        .ts-orbit-uranus   { width: 330px; height: 330px; animation-duration: 40s; }
+        .ts-orbit-neptune  { width: 368px; height: 368px; animation-duration: 48s; }
+
+        .ts-mercury { width: 6px; height: 6px; background: #b3aca5; }
+        .ts-venus   { width: 10px; height: 10px; background: #e8c39e; }
+        .ts-earth   { width: 11px; height: 11px; background: radial-gradient(circle at 35% 35%, #6fb1ea, #2e6fb0 70%); }
+        .ts-mars    { width: 8px; height: 8px; background: #c1552e; }
+        .ts-jupiter { width: 19px; height: 19px; background: radial-gradient(circle at 35% 35%, #e6cba8, #b98b5e 75%); }
+        .ts-saturn  { width: 16px; height: 16px; background: radial-gradient(circle at 35% 35%, #f0e0b0, #c9a86a 75%); }
+        .ts-uranus  { width: 13px; height: 13px; background: #9fe3e3; }
+        .ts-neptune { width: 13px; height: 13px; background: #4166b0; }
+
+        .ts-meteor {
+            position: absolute; width: 2px; height: 2px; background: #fff; border-radius: 50%;
+            opacity: 0; animation: tsMeteor linear infinite;
+        }
+        .ts-meteor::before {
+            content: ''; position: absolute; top: 50%; right: 0; width: 60px; height: 1.5px;
+            background: linear-gradient(90deg, #fff, transparent);
+            transform: translateY(-50%);
+        }
+        @keyframes tsMeteor {
+            0% { transform: translate(0,0) rotate(200deg); opacity: 0; }
+            8% { opacity: 1; }
+            30% { transform: translate(-280px, 280px) rotate(200deg); opacity: 0; }
+            100% { opacity: 0; }
+        }
+        .ts-meteor.tm1 { top: 6%; left: 82%; animation-duration: 5s; animation-delay: 1s; }
+        .ts-meteor.tm2 { top: 14%; left: 30%; animation-duration: 7s; animation-delay: 3.4s; }
+
+        .ts-caption {
+            min-height: 30px; font-family: 'Space Mono', monospace; font-size: 0.85rem;
+            color: var(--sun-deep); text-align: center; font-weight: 700;
+        }
+
+        .ts-legend {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 14px;
+            max-width: 560px; padding: 14px 18px; background: rgba(0,0,0,0.35);
+            border-radius: 14px; border: 1px solid rgba(255,255,255,0.06);
+        }
+        .ts-legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: #C8D8F0; }
+        .ts-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+        #game-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            padding: 10px 0;
+            width: 100%;
+        }
+
+        #game-screen .game-wrapper {
+            width: 100%;
+            max-width: 480px;
+            aspect-ratio: 9 / 16;
+            background: #060217;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7);
+            border: 2px solid rgba(126, 247, 255, 0.15);
+            position: relative;
+        }
+
+        #game-screen .game-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        .game-controls {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .game-controls .btn-game {
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid #7ef7ff;
+            padding: 10px 24px;
+            border-radius: 12px;
+            color: #7ef7ff;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Work Sans', sans-serif;
+        }
+
+        .game-controls .btn-game:hover {
+            background: #7ef7ff;
+            color: #0B0F1A;
+            transform: scale(1.05);
+        }
+
+        .game-controls .btn-game.danger {
+            border-color: var(--coral);
+            color: var(--coral);
+        }
+
+        .game-controls .btn-game.danger:hover {
+            background: var(--coral);
+            color: #0B0F1A;
+        }
+
+        @media (max-width: 700px) {
+            .blog-container { padding: 22px 16px 30px; border-radius: 18px; }
+            .intro-title { font-size: 2rem; }
+            .menu-card { flex: 1 1 120px; padding: 18px 14px; }
+            .btn-mulai { font-size: 1.1rem; padding: 14px 34px; }
+            .btn-masuk { font-size: 1.2rem; padding: 14px 36px; }
+            .btn-masuk i { font-size: 1.4rem; }
+            .logo-sekolah span { font-size: 0.72rem; }
+            .top-bar { flex-wrap: wrap; }
+            .quiz-item { width: 140px; }
+            .quiz-item img { height: 92px; }
+            .quiz-item.option-abcd { width: 100%; }
+            #game-screen .game-wrapper { border-radius: 12px; }
+        }
+        @media (max-width: 450px) {
+            .quiz-item { width: 112px; }
+            .quiz-item img { height: 74px; }
+            .intro-text { padding: 16px 16px; font-size: 0.92rem; }
+            .menu-card { flex: 1 1 100%; }
+            .materi-box { padding: 18px 16px; font-size: 0.95rem; }
+            #complete-screen h2 { font-size: 1.7rem; }
+            .tree-widget { min-width: 70px; padding: 6px 10px 5px; }
+            .tree-widget svg { width: 42px; height: 42px; }
+            .game-controls .btn-game { font-size: 0.75rem; padding: 8px 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="dust-canvas"></canvas>
+    <div class="meteor-layer" aria-hidden="true">
+        <span class="meteor m1"></span>
+        <span class="meteor m2"></span>
+        <span class="meteor m3"></span>
+        <span class="meteor m4"></span>
+    </div>
+
+    <div class="blog-container">
+
+        <div class="top-bar">
+            <div class="logo-sekolah">
+                <img src="https://iili.io/COPtgPj.png" alt="Logo Sekolah" />
+                <span>SMPN 16 PALEMBANG</span>
+            </div>
+            <div class="top-bar-right">
+                <div class="tree-widget tw-stage-0" id="treeWidget" role="img" aria-label="Pohon Harapan: benih">
+                    <svg viewBox="0 0 60 60">
+                        <ellipse class="stage-part p-soil" cx="30" cy="52" rx="20" ry="5" fill="#3A4A6B" opacity="0.5" />
+                        <circle class="stage-part p-seed" cx="30" cy="47" r="4" fill="#F5C542" />
+                        <rect class="stage-part stem p-stem1" x="28" y="30" width="4" height="20" rx="2" fill="#5B8DBF" />
+                        <circle class="stage-part p-leaf1" cx="21" cy="32" r="7" fill="#7BA9D9" />
+                        <rect class="stage-part stem p-stem2" x="27.5" y="14" width="5" height="36" rx="2.5" fill="#2A4B7C" />
+                        <circle class="stage-part p-leaf2" cx="39" cy="26" r="8" fill="#7BA9D9" />
+                        <circle class="stage-part p-canopy1" cx="30" cy="16" r="13" fill="#5B8DBF" />
+                        <circle class="stage-part p-canopy2" cx="19" cy="22" r="9" fill="#7BA9D9" />
+                        <circle class="stage-part p-canopy3" cx="41" cy="22" r="9" fill="#4A7AAD" />
+                        <circle class="stage-part p-fruit" cx="24" cy="16" r="2.4" fill="#F5C542" />
+                        <circle class="stage-part p-fruit" cx="36" cy="12" r="2.4" fill="#F5C542" />
+                        <circle class="stage-part p-fruit" cx="33" cy="24" r="2.4" fill="#F5C542" />
+                    </svg>
+                    <span class="tree-label" id="treeLabel">BENIH</span>
+                </div>
+                <button class="menu-dots-btn" id="menuDotsBtn" aria-label="Menu tambahan">
+                    <i class="fas fa-ellipsis-vertical"></i>
+                </button>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <div class="guru-item">
+                        <img src="https://cdn.jsdelivr.net/gh/jquerynh/nexa-hosting@main/tugas/IMG-20260724-WA0041_1.jpg" alt="Foto Guru Amara Dewanti" />
+                        <div class="guru-info">
+                            <div class="nama">Amara Dewanti</div>
+                            <div class="gelar">S.Pd., Gr., M.Pd</div>
+                            <div style="font-size:0.7rem;color:#8899BB;margin-top:2px;"><i class="fas fa-chalkboard-teacher"></i> Guru Pengampu</div>
+                        </div>
+                    </div>
+                    <div class="guru-item" style="border-top: 1px solid rgba(255, 255, 255, 0.06); padding-top: 10px; margin-top: 4px;">
+                        <img src="https://cdn.jsdelivr.net/gh/jquerynh/nexa-hosting@main/tugas/IMG_20260726_200854_114.jpg" alt="Foto Profil Alqhifari Hazard Dewantara" />
+                        <div class="guru-info">
+                            <div class="nama">Alqhifari Hazard Dewantara</div>
+                            <div class="kelas"><i class="fas fa-user-graduate"></i> Kelas: 9.1</div>
+                            <div style="font-size:0.65rem;color:#556688;margin-top:1px;"><i class="fas fa-code"></i> Pembuat Website</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="video-header anim-in" style="animation-delay:0.2s;">
+            <video autoplay muted loop playsinline>
+                <source src="https://cdn.jsdelivr.net/gh/jquerynh/nexa-hosting@main/tugas/ssstik.io_@4khrdiaries_1784944002539_20260725_091113.mp4" type="video/mp4" />
+            </video>
+            <div class="video-overlay">
+                <div class="video-title"><i class="fas fa-rocket"></i> Planet Planet Tata Surya Kita</div>
+            </div>
+        </div>
+
+        <div class="music-indicator" id="musicIndicator">
+            <button id="musicToggle" aria-label="Nyalakan atau matikan musik latar">
+                <i class="fas fa-music"></i>
+                <span id="musicStatus">Klik untuk putar musik</span>
+            </button>
+        </div>
+
+        <div id="loading-screen">
+            <div class="loader-wrapper"><div class="loader-seed"></div></div>
+            <div class="loader-text">Menjelajahi galaksi…</div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+            <div class="btn-masuk-wrapper">
+                <button class="btn-masuk" id="btnMasuk">
+                    <i class="fas fa-rocket"></i> Masuk
+                </button>
+            </div>
+        </div>
+
+        <div id="intro-screen">
+            <div class="eyebrow">Belajar sambil menjelajah</div>
+            <div class="intro-title">Eksplorasi Luar Angkasa,<br /><em>Temukan Planet Baru</em></div>
+            <div class="intro-text">
+                <strong>🚀 Mengapa Menjelajahi Luar Angkasa Itu Penting?</strong>
+                <p style="margin-top:8px;">
+                    Luar angkasa menyimpan <span class="highlight">misteri tak terbatas</span>, <span class="highlight">planet-planet baru</span>, dan <span class="highlight">kemungkinan kehidupan di luar Bumi</span>.
+                </p>
+                <p style="margin-top:10px;">
+                    Eksplorasi antariksa mendorong <strong>teknologi canggih</strong>, <strong>penemuan ilmiah</strong>, dan <strong>inspirasi bagi generasi masa depan</strong>.
+                </p>
+                <p style="margin-top:10px;font-style:italic;color:#7BA9D9;">
+                    🌟 Setiap jawaban benar akan menumbuhkan <strong>Pohon Harapan</strong> di pojok kanan atas. Coba sampai penuh!
+                </p>
+            </div>
+            <button class="btn-mulai" id="btnMulai">
+                <i class="fas fa-rocket"></i> Mulai Eksplorasi
+            </button>
+        </div>
+
+        <div id="menu-screen">
+            <div class="menu-title"><i class="fas fa-th-large"></i>Pilih Menu</div>
+            <div class="menu-grid">
+                <div class="menu-card" data-menu="penjelasan" role="button" tabindex="0">
+                    <span class="menu-icon">🪐</span>
+                    <div class="menu-label">Penjelasan</div>
+                    <div class="menu-desc">Mengapa harus menjelajah?</div>
+                </div>
+                <div class="menu-card" data-menu="caramenjaga" role="button" tabindex="0">
+                    <span class="menu-icon">🔭</span>
+                    <div class="menu-label">Cara Menjelajah</div>
+                    <div class="menu-desc">Tips eksplorasi antariksa</div>
+                </div>
+                <div class="menu-card tatasurya-card" data-menu="tatasurya" role="button" tabindex="0">
+                    <span class="menu-icon">🌠</span>
+                    <div class="menu-label">Susunan Tata Surya</div>
+                    <div class="menu-desc">Animasi planet mengorbit Matahari</div>
+                </div>
+                <div class="menu-card quiz-card" data-menu="quiz" role="button" tabindex="0">
+                    <span class="menu-icon">🌌</span>
+                    <div class="menu-label">Quiz</div>
+                    <div class="menu-desc">5 soal seru, acak tiap main!</div>
+                </div>
+                <div class="menu-card game-card" data-menu="game" role="button" tabindex="0">
+                    <span class="menu-icon">🚀</span>
+                    <div class="menu-label">Roket Galaxy PiwPiw</div>
+                    <div class="menu-desc">Mainkan game tembak alien & meteor!</div>
+                </div>
+                <div class="menu-card info-card" data-menu="info" role="button" tabindex="0">
+                    <span class="menu-icon">📋</span>
+                    <div class="menu-label">Info Siswa, Sekolah & Guru</div>
+                    <div class="menu-desc">Profil lengkap pembuat & pengampu</div>
+                </div>
+            </div>
+            <button class="btn-back" id="btnBackFromMenu"><i class="fas fa-arrow-left"></i> Kembali</button>
+        </div>
+
+        <div id="materi-screen">
+            <div class="materi-box" id="materiContent">
+                <h3 id="materiTitle">🪐 Mengapa Harus Menjelajah Luar Angkasa?</h3>
+                <div id="materiBody"></div>
+            </div>
+            <button class="btn-back" id="btnBackFromMateri"><i class="fas fa-arrow-left"></i> Kembali ke Menu</button>
+        </div>
+
+        <div id="tatasurya-screen">
+            <div class="tatasurya-wrap" id="tsWrap">
+                <div class="ts-stars" id="tsStars"></div>
+                <div class="sun-core" id="tsSun" title="Matahari" tabindex="0" role="button" aria-label="Matahari"></div>
+
+                <div class="ts-orbit ts-orbit-mercury"><div class="ts-planet ts-mercury" data-name="Merkurius" tabindex="0" role="button"></div></div>
+                <div class="ts-orbit ts-orbit-venus"><div class="ts-planet ts-venus" data-name="Venus" tabindex="0" role="button"></div></div>
+                <div class="ts-orbit ts-orbit-earth"><div class="ts-planet ts-earth" data-name="Bumi" tabindex="0" role="button"></div></div>
+                <div class="ts-orbit ts-orbit-mars"><div class="ts-planet ts-mars" data-name="Mars" tabindex="0" role="button"></div></div>
+                <div class="ts-orbit ts-orbit-jupiter"><div class="ts-planet ts-jupiter" data-name="Jupiter" tabindex="0" role="button"></div></div>
+                <div class="ts-orbit ts-orbit-saturn"><div class="ts-planet ts-saturn has-ring" data-name="Saturnus" tabindex="0" role="button"></div></div>
+                <div class="ts-orbit ts-orbit-uranus"><div class="ts-planet ts-uranus" data-name="Uranus" tabindex="0" role="button"></div></div>
+                <div class="ts-orbit ts-orbit-neptune"><div class="ts-planet ts-neptune" data-name="Neptunus" tabindex="0" role="button"></div></div>
+
+                <span class="ts-meteor tm1"></span>
+                <span class="ts-meteor tm2"></span>
+            </div>
+            <div class="ts-caption" id="tsCaption">Ketuk Matahari atau planet untuk melihat namanya</div>
+            <div class="ts-legend" id="tsLegend"></div>
+            <button class="btn-back" id="btnBackFromTs"><i class="fas fa-arrow-left"></i> Kembali ke Menu</button>
+        </div>
+
+        <div id="quiz-screen">
+            <div class="quiz-header" id="quizTitle">🪐 Soal 1</div>
+            <div class="quiz-subheader" id="quizSubheader">Pilih gambar yang merupakan objek luar angkasa</div>
+            <div class="quiz-grid" id="quizGrid"></div>
+            <div id="notifArea" class="notif" role="status" aria-live="polite">Pilih salah satu</div>
+            <button class="btn-next" id="btnNext"><i class="fas fa-arrow-right"></i> Lanjut</button>
+            <div class="quiz-progress" id="progressDots"></div>
+        </div>
+
+        <div id="complete-screen">
+            <div class="complete-icon">🚀</div>
+            <h2>Eksplorasi Selesai! 🌟</h2>
+            <p>Kamu telah menyelesaikan semua misi dan menumbuhkan Pohon Harapan hingga penuh. Teruslah belajar dan jelajahi alam semesta!</p>
+            <div class="score-chip" id="scoreChip">SKOR: 5/5 percobaan pertama benar</div>
+            <button class="btn-retry" id="btnRetry"><i class="fas fa-redo"></i> Ulangi</button>
+        </div>
+
+        <div id="game-screen">
+            <div class="game-wrapper">
+                <iframe id="gameFrame" src="" allow="autoplay; fullscreen" loading="lazy"></iframe>
+            </div>
+            <div class="game-controls">
+                <button class="btn-game" id="gameCloseBtn"><i class="fas fa-arrow-left"></i> Kembali ke Menu</button>
+                <button class="btn-game" id="gameFullscreenBtn"><i class="fas fa-expand"></i> Layar Penuh</button>
+            </div>
+        </div>
+
+        <audio id="bgMusic" loop preload="none">
+            <source src="https://cdn.jsdelivr.net/gh/jquerynh/nexa-hosting@main/tugas/ssstik.io_1784946298452.mp3" type="audio/mpeg" />
+        </audio>
+
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            const canvas = document.getElementById('dust-canvas');
+            const ctx = canvas.getContext('2d');
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            let particles = [];
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            class Mote {
+                constructor() { this.reset(true); }
+                reset(initial) {
+                    this.x = Math.random() * canvas.width;
+                    this.y = initial ? Math.random() * canvas.height : canvas.height + 10;
+                    this.size = Math.random() * 2.4 + 0.8;
+                    this.speedY = -(Math.random() * 0.35 + 0.1);
+                    this.speedX = (Math.random() - 0.5) * 0.15;
+                    this.opacity = Math.random() * 0.35 + 0.1;
+                    this.hueGold = Math.random() > 0.6;
+                }
+                update() { this.y += this.speedY; this.x += this.speedX; if (this.y < -10) this.reset(false); }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = this.hueGold ? `rgba(245,197,66,${this.opacity})` : `rgba(91,141,191,${this.opacity})`;
+                    ctx.fill();
+                }
+            }
+
+            if (!reduceMotion) {
+                for (let i = 0; i < 44; i++) particles.push(new Mote());
+                (function animateDust() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    particles.forEach(p => { p.update(); p.draw(); });
+                    requestAnimationFrame(animateDust);
+                })();
+            }
+
+            function fireConfetti(durationMs) {
+                if (reduceMotion) return;
+                const colors = ['#F5C542', '#2A4B7C', '#7BA9D9', '#E86850', '#5B8DBF'];
+                const end = Date.now() + (durationMs || 1800);
+                (function frame() {
+                    for (let i = 0; i < 5; i++) {
+                        const el = document.createElement('div');
+                        const size = Math.random() * 8 + 6;
+                        el.style.position = 'fixed';
+                        el.style.left = (Math.random() * 100) + 'vw';
+                        el.style.top = '-10px';
+                        el.style.width = size + 'px';
+                        el.style.height = size + 'px';
+                        el.style.background = colors[Math.floor(Math.random() * colors.length)];
+                        el.style.borderRadius = Math.random() > 0.5 ? '50%' : '3px';
+                        el.style.zIndex = '9999';
+                        el.style.pointerEvents = 'none';
+                        el.style.opacity = '0.9';
+                        const drift = (Math.random() - 0.5) * 200;
+                        const rot = Math.random() * 720 - 360;
+                        el.style.transition = 'transform 1.6s ease-out, opacity 1.6s ease-out';
+                        document.body.appendChild(el);
+                        requestAnimationFrame(() => {
+                            el.style.transform = `translate(${drift}px, 100vh) rotate(${rot}deg)`;
+                            el.style.opacity = '0';
+                        });
+                        setTimeout(() => el.remove(), 1700);
+                    }
+                    if (Date.now() < end) requestAnimationFrame(frame);
+                })();
+            }
+
+            function reveal(el, cls) {
+                if (!el) return;
+                el.classList.remove('anim-in', 'anim-in-down', 'anim-pop', 'anim-bounce');
+                void el.offsetWidth;
+                el.classList.add(cls || 'anim-in');
+            }
+            function revealStagger(list, cls, gap) {
+                list.forEach((el, i) => {
+                    if (!el) return;
+                    el.style.animationDelay = (i * (gap || 80)) + 'ms';
+                    reveal(el, cls);
+                });
+            }
+
+            const loading = document.getElementById('loading-screen');
+            const intro = document.getElementById('intro-screen');
+            const menuScreen = document.getElementById('menu-screen');
+            const materiScreen = document.getElementById('materi-screen');
+            const tsScreen = document.getElementById('tatasurya-screen');
+            const quizScreen = document.getElementById('quiz-screen');
+            const completeScreen = document.getElementById('complete-screen');
+            const gameScreen = document.getElementById('game-screen');
+            const gameFrame = document.getElementById('gameFrame');
+            const quizGrid = document.getElementById('quizGrid');
+            const notif = document.getElementById('notifArea');
+            const quizTitle = document.getElementById('quizTitle');
+            const quizSubheader = document.getElementById('quizSubheader');
+            const progressDots = document.getElementById('progressDots');
+            const btnNext = document.getElementById('btnNext');
+            const btnMulai = document.getElementById('btnMulai');
+            const btnRetry = document.getElementById('btnRetry');
+            const btnBackFromMenu = document.getElementById('btnBackFromMenu');
+            const btnBackFromMateri = document.getElementById('btnBackFromMateri');
+            const btnBackFromTs = document.getElementById('btnBackFromTs');
+            const gameCloseBtn = document.getElementById('gameCloseBtn');
+            const gameFullscreenBtn = document.getElementById('gameFullscreenBtn');
+            const progressFill = document.getElementById('progressFill');
+            const scoreChip = document.getElementById('scoreChip');
+            const menuDotsBtn = document.getElementById('menuDotsBtn');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            const materiTitle = document.getElementById('materiTitle');
+            const materiBody = document.getElementById('materiBody');
+            const audio = document.getElementById('bgMusic');
+            const musicStatus = document.getElementById('musicStatus');
+            const musicIndicator = document.getElementById('musicIndicator');
+            const musicToggle = document.getElementById('musicToggle');
+            const treeWidget = document.getElementById('treeWidget');
+            const treeLabel = document.getElementById('treeLabel');
+            const treeStages = ['BENIH', 'TUNAS', 'POHON MUDA', 'POHON RINDANG'];
+            const tsCaption = document.getElementById('tsCaption');
+            const tsStars = document.getElementById('tsStars');
+            const tsLegend = document.getElementById('tsLegend');
+            const tsSun = document.getElementById('tsSun');
+            const btnMasuk = document.getElementById('btnMasuk');
+
+            // Game HTML content (inline) - fixed template string
+            var GAME_HTML = '<!DOCTYPE html>\n<html lang="id">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">\n<title>Roket Galaxy PiwPiw</title>\n<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">\n<style>\n  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }\n  html, body {\n    margin: 0; padding: 0; height: 100%; background: #05010f;\n    font-family: \'VT323\', monospace; overflow: hidden; touch-action: none;\n  }\n  #wrap {\n    position: relative; width: 100%; max-width: 480px; margin: 0 auto;\n    height: 100vh; height: 100dvh; background: #05010f;\n    display: flex; align-items: center; justify-content: center;\n    overflow: hidden;\n  }\n  #stage {\n    position: relative; width: 100%; aspect-ratio: 9 / 16; max-height: 100%;\n    background: #060217; box-shadow: 0 0 40px rgba(140,60,255,0.25) inset;\n    border-left: 2px solid #1a0f3d; border-right: 2px solid #1a0f3d;\n  }\n  canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; }\n\n  .pxfont { font-family: \'Press Start 2P\', monospace; }\n\n  .overlay {\n    position: absolute; inset: 0; display: flex; flex-direction: column;\n    align-items: center; justify-content: center; gap: 14px;\n    background: radial-gradient(ellipse at 50% 20%, rgba(90,40,180,0.35), rgba(3,1,15,0.92) 70%);\n    color: #f2e9ff; text-align: center; padding: 24px; z-index: 30;\n  }\n  .hidden { display: none !important; }\n\n  .title-glow {\n    font-size: 15px; line-height: 1.7; color: #7ef7ff;\n    text-shadow: 0 0 8px #00e5ff, 0 0 18px #ff00e0, 2px 2px 0 #2a0a4d;\n    letter-spacing: 1px;\n  }\n  .sub {\n    font-size: 12px; color: #c9b8ff; line-height: 1.6; max-width: 320px;\n  }\n\n  .btn {\n    font-family: \'Press Start 2P\', monospace;\n    font-size: 11px; color: #0a0417; background: linear-gradient(180deg,#7ef7ff,#00b8d4);\n    border: 3px solid #003844; border-radius: 6px; padding: 12px 18px;\n    box-shadow: 0 4px 0 #003844, 0 6px 10px rgba(0,0,0,0.5);\n    cursor: pointer; letter-spacing: 1px; touch-action: manipulation;\n  }\n  .btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #003844; }\n  .btn.magenta { background: linear-gradient(180deg,#ff8bf0,#e619c9); box-shadow: 0 4px 0 #6b0a5e, 0 6px 10px rgba(0,0,0,0.5); border-color:#6b0a5e; }\n  .btn.magenta:active { box-shadow: 0 1px 0 #6b0a5e; }\n  .btn.gold { background: linear-gradient(180deg,#ffe082,#ffa000); box-shadow: 0 4px 0 #7a4a00, 0 6px 10px rgba(0,0,0,0.5); border-color:#7a4a00; }\n  .btn.gold:active { box-shadow: 0 1px 0 #7a4a00; }\n  .btn.small { font-size: 9px; padding: 8px 10px; }\n  .btn:disabled { filter: grayscale(0.7) brightness(0.6); }\n\n  .diffrow { display:flex; gap:8px; flex-wrap: wrap; justify-content:center; }\n  .diffbtn {\n    font-family:\'Press Start 2P\',monospace; font-size:10px; color:#f2e9ff;\n    background: rgba(255,255,255,0.06); border:2px solid #4a3a7a; border-radius:5px;\n    padding:10px 14px; cursor:pointer;\n  }\n  .diffbtn.sel { background: linear-gradient(180deg,#7ef7ff,#00b8d4); color:#0a0417; border-color:#003844; }\n\n  #hud {\n    position:absolute; top:0; left:0; right:0; z-index:20; padding:8px 10px;\n    display:flex; justify-content:space-between; align-items:flex-start;\n    font-family:\'Press Start 2P\',monospace; font-size:9px; color:#fff;\n    text-shadow: 1px 1px 0 #000; pointer-events:none;\n  }\n  #hpbar { width:110px; height:10px; background:#2a0a1a; border:2px solid #000; border-radius:3px; overflow:hidden; }\n  #hpfill { height:100%; width:100%; background:linear-gradient(90deg,#ff3b3b,#ff9d3b); transition: width 0.15s; }\n  .hudcol { display:flex; flex-direction:column; gap:4px; pointer-events:auto; }\n  .coinrow { display:flex; align-items:center; gap:5px; color:#ffe082; }\n  #pauseBtn {\n    pointer-events:auto; background:rgba(0,0,0,0.5); border:2px solid #7ef7ff; color:#7ef7ff;\n    border-radius:4px; font-family:\'Press Start 2P\',monospace; font-size:11px; padding:6px 8px;\n  }\n\n  #controls {\n    position:absolute; bottom:0; left:0; right:0; z-index:20;\n    display:flex; justify-content:space-between; align-items:flex-end;\n    padding: 0 14px 18px 14px; pointer-events:none;\n  }\n  .movebtn {\n    pointer-events:auto; width:64px; height:64px; border-radius:50%;\n    background: rgba(120,80,255,0.18); border:3px solid rgba(126,247,255,0.55);\n    display:flex; align-items:center; justify-content:center; font-size:26px; color:#7ef7ff;\n    box-shadow: 0 0 12px rgba(126,247,255,0.25) inset;\n    cursor:pointer;\n  }\n  .movebtn:active, .movebtn.active { background: rgba(126,247,255,0.4); }\n  .movegroup { display:flex; gap:14px; pointer-events:auto; }\n\n  .shopgrid { display:flex; flex-direction:column; gap:10px; width:100%; max-width:340px; }\n  .shopitem {\n    display:flex; align-items:center; justify-content:space-between; gap:8px;\n    background: rgba(255,255,255,0.05); border:2px solid #4a3a7a; border-radius:8px;\n    padding:10px 12px; font-size:11px;\n  }\n  .shopitem .info { text-align:left; flex:1; }\n  .shopitem .lvl { color:#7ef7ff; font-family:\'Press Start 2P\',monospace; font-size:9px; }\n  .shopitem .desc { font-size:12px; color:#c9b8ff; margin-top:2px;}\n\n  .modelrow { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }\n  .modelcard {\n    width:88px; padding:8px 6px; border:2px solid #4a3a7a; border-radius:8px;\n    background: rgba(255,255,255,0.05); display:flex; flex-direction:column; align-items:center; gap:6px;\n  }\n  .modelcard.sel { border-color:#7ef7ff; box-shadow:0 0 10px rgba(126,247,255,0.5); }\n  .modelcard canvas { image-rendering: pixelated; }\n  .modelcard .name { font-size:10px; color:#f2e9ff; }\n  .tabs { display:flex; gap:8px; margin-bottom:6px; }\n  .tab { font-family:\'Press Start 2P\',monospace; font-size:9px; padding:8px 12px; border-radius:5px; background:rgba(255,255,255,0.06); color:#c9b8ff; border:2px solid transparent; cursor:pointer;}\n  .tab.active { color:#0a0417; background:#7ef7ff; border-color:#003844; }\n  .scrollpanel { max-height:46vh; overflow-y:auto; width:100%; display:flex; justify-content:center; }\n</style>\n</head>\n<body>\n<div id="wrap">\n  <div id="stage">\n    <canvas id="game"></canvas>\n\n    <!-- HUD -->\n    <div id="hud" class="hidden">\n      <div class="hudcol">\n        <div id="hpbar"><div id="hpfill"></div></div>\n        <div class="coinrow">🪙 <span id="hudCoins">0</span></div>\n        <div class="coinrow">⭐ <span id="hudScore">0</span></div>\n      </div>\n      <button id="pauseBtn">II</button>\n    </div>\n\n    <!-- controls -->\n    <div id="controls" class="hidden">\n      <div class="movegroup">\n        <div class="movebtn" id="btnLeft">◀</div>\n        <div class="movebtn" id="btnRight">▶</div>\n      </div>\n      <div class="movebtn" id="btnBomb" style="border-color:rgba(255,120,220,0.6); color:#ff8bf0;">✦</div>\n    </div>\n\n    <!-- MAIN MENU -->\n    <div id="menu" class="overlay">\n      <div class="title-glow pxfont">ROKET<br>GALAXY PIWPIW<br><span style="font-size:10px;color:#ff8bf0;">DI LUAR ANGKASA</span></div>\n      <div class="sub">Gerakkan roketmu, tembak alien &amp; hancurkan meteor, kumpulkan koin!</div>\n      <div class="sub pxfont" style="font-size:10px;color:#7ef7ff;">Pilih Kesulitan</div>\n      <div class="diffrow" id="diffRow">\n        <div class="diffbtn sel" data-diff="easy">EASY</div>\n        <div class="diffbtn" data-diff="medium">MEDIUM</div>\n        <div class="diffbtn" data-diff="hard">HARD</div>\n      </div>\n      <button class="btn" id="startBtn">▶ MULAI</button>\n      <button class="btn gold small" id="shopBtnMenu">🛠 UPGRADE ROKET</button>\n      <div class="sub" style="font-size:11px;">🪙 Koin: <span id="menuCoins">0</span> &nbsp; 🏆 Skor Tertinggi: <span id="menuHigh">0</span></div>\n    </div>\n\n    <!-- SHOP -->\n    <div id="shop" class="overlay hidden">\n      <div class="title-glow pxfont" style="font-size:13px;">HANGAR ROKET</div>\n      <div class="sub">🪙 Koin: <span id="shopCoins">0</span></div>\n      <div class="tabs">\n        <div class="tab active" id="tabUpgrade">UPGRADE</div>\n        <div class="tab" id="tabModel">MODEL ROKET</div>\n      </div>\n      <div class="scrollpanel">\n        <div class="shopgrid" id="upgradePanel"></div>\n        <div class="modelrow hidden" id="modelPanel"></div>\n      </div>\n      <button class="btn" id="shopBackBtn">◀ KEMBALI</button>\n    </div>\n\n    <!-- PAUSE -->\n    <div id="pauseScreen" class="overlay hidden">\n      <div class="title-glow pxfont" style="font-size:14px;">JEDA</div>\n      <button class="btn" id="resumeBtn">▶ LANJUT</button>\n      <button class="btn gold small" id="pauseShopBtn">🛠 UPGRADE</button>\n      <button class="btn magenta small" id="quitBtn">■ KELUAR KE MENU</button>\n    </div>\n\n    <!-- GAME OVER -->\n    <div id="gameOverScreen" class="overlay hidden">\n      <div class="title-glow pxfont" style="font-size:14px; color:#ff5b5b; text-shadow:0 0 10px #ff0000;">ROKET HANCUR!</div>\n      <div class="sub pxfont" style="font-size:11px;">Skor: <span id="finalScore">0</span></div>\n      <div class="sub pxfont" style="font-size:11px; color:#ffe082;">🪙 +<span id="finalCoins">0</span> Koin</div>\n      <button class="btn" id="retryBtn">↻ MAIN LAGI</button>\n      <button class="btn gold small" id="goShopBtn">🛠 UPGRADE ROKET</button>\n      <button class="btn magenta small" id="goMenuBtn">■ MENU UTAMA</button>\n    </div>\n  </div>\n</div>\n\n<script>\n(function(){\n"use strict";\n\nvar canvas = document.getElementById(\'game\');\nvar ctx = canvas.getContext(\'2d\');\nvar LW = 360, LH = 640;\ncanvas.width = LW; canvas.height = LH;\nctx.imageSmoothingEnabled = false;\n\nvar DEFAULT_SAVE = {\n  coins: 0,\n  highScore: 0,\n  upgrades: { fireRate: 0, damage: 0, speed: 0 },\n  unlockedModels: [0],\n  selectedModel: 0,\n  difficulty: \'easy\'\n};\nvar save = JSON.parse(JSON.stringify(DEFAULT_SAVE));\n\nfunction loadSave(){\n  try{\n    var raw = localStorage.getItem(\'rocket-shooter-save\');\n    if(raw){\n      var parsed = JSON.parse(raw);\n      save = Object.assign({}, DEFAULT_SAVE, parsed);\n      save.upgrades = Object.assign({}, DEFAULT_SAVE.upgrades, parsed.upgrades || {});\n    }\n  }catch(e){}\n  refreshMenuUI();\n}\nfunction persist(){\n  try{ localStorage.setItem(\'rocket-shooter-save\', JSON.stringify(save)); }catch(e){}\n}\n\nfunction drawSprite(g, pattern, colorMap, x, y, ps){\n  for(var r=0;r<pattern.length;r++){\n    var row = pattern[r];\n    for(var c=0;c<row.length;c++){\n      var ch = row[c];\n      if(ch === \'.\') continue;\n      g.fillStyle = colorMap[ch];\n      g.fillRect(Math.round(x+c*ps), Math.round(y+r*ps), ps, ps);\n    }\n  }\n}\nfunction spriteSize(pattern, ps){\n  return { w: pattern[0].length*ps, h: pattern.length*ps };\n}\n\nvar ROCKET_MODELS = [\n  {\n    name: \'SCOUT\',\n    cost: 0,\n    body: [\n      "...WW...",\n      "..WWWW..",\n      "..WBBW..",\n      ".WWBBWW.",\n      ".WWWWWW.",\n      "RWWWWWWR",\n      "RWWWWWWR",\n      "R.WWWW.R",\n      "..F.F...",\n    ],\n    colors: {W:\'#e9edf5\', B:\'#4fc3f7\', R:\'#8a8f9c\', F:\'#ff8a3d\'},\n    flameAlt: {W:\'#e9edf5\', B:\'#4fc3f7\', R:\'#8a8f9c\', F:\'#ffd23d\'},\n  },\n  {\n    name: \'FALCON\',\n    cost: 120,\n    body: [\n      "...WW...",\n      "..WWWW..",\n      ".BWBBWB.",\n      "BBWBBWBB",\n      ".BWWWWB.",\n      "BBWWWWBB",\n      ".BWWWWWB.",\n      "..F..F..",\n      "...FF...",\n    ],\n    colors: {W:\'#dfe8ff\', B:\'#3d6bff\', F:\'#66e0ff\'},\n    flameAlt: {W:\'#dfe8ff\', B:\'#3d6bff\', F:\'#b6faff\'},\n  },\n  {\n    name: \'TITAN\',\n    cost: 300,\n    body: [\n      "..GYYG..",\n      ".GYYYYG.",\n      ".GYRRYG.",\n      "GYYRRYYG",\n      "GYYYYYYG",\n      "GYYYYYYG",\n      "GGYYYYGG",\n      ".F.FF.F.",\n      "..F..F..",\n    ],\n    colors: {G:\'#8a6d00\', Y:\'#ffcf3d\', R:\'#ff4d4d\'},\n    flameAlt: {G:\'#8a6d00\', Y:\'#ffcf3d\', R:\'#ff8a3d\'},\n  },\n];\n\nvar ALIEN_PATTERN = [\n  "..GGGG..",\n  ".GGGGGG.",\n  "GGWGGWGG",\n  "GGGGGGGG",\n  "..YYYY..",\n  ".G.GG.G.",\n];\nvar ALIEN_COLORS = {G:\'#5df58a\', W:\'#0b3d1f\', Y:\'#c8ffd8\'};\nvar ALIEN_COLORS2 = {G:\'#ff6dd8\', W:\'#4d0038\', Y:\'#ffd8f7\'};\n\nvar stars = [];\nfunction initStars(){\n  stars = [];\n  for(var i=0;i<70;i++){\n    stars.push({\n      x: Math.random()*LW, y: Math.random()*LH,\n      size: Math.random()<0.85 ? 1 : 2,\n      speed: 20 + Math.random()*40,\n      tw: Math.random()*Math.PI*2\n    });\n  }\n}\nvar PLANETS = [\n  {x:60, y:90, r:34, color:\'#7a3fd1\', ring:false, speed:4},\n  {x:300, y:220, r:22, color:\'#ff8a3d\', ring:true, ringColor:\'#ffd08a\', speed:2.5},\n  {x:80, y:460, r:16, color:\'#3dd6ff\', ring:false, speed:6},\n  {x:310, y:540, r:28, color:\'#ff4da6\', ring:true, ringColor:\'#ffd6ee\', speed:3},\n];\nvar bgTime = 0;\n\nfunction drawBackground(dt){\n  bgTime += dt;\n  var grad = ctx.createLinearGradient(0,0,0,LH);\n  grad.addColorStop(0,\'#0a0620\');\n  grad.addColorStop(1,\'#150533\');\n  ctx.fillStyle = grad;\n  ctx.fillRect(0,0,LW,LH);\n\n  for(var i=0;i<PLANETS.length;i++){\n    var p = PLANETS[i];\n    var by = p.y + Math.sin(bgTime*0.5 + p.x)*6;\n    if(p.ring){\n      ctx.save();\n      ctx.translate(p.x, by);\n      ctx.rotate(-0.3);\n      ctx.fillStyle = p.ringColor;\n      ctx.globalAlpha = 0.55;\n      ctx.beginPath();\n      ctx.ellipse(0,0,p.r*1.7,p.r*0.5,0,0,Math.PI*2);\n      ctx.fill();\n      ctx.globalAlpha = 1;\n      ctx.restore();\n    }\n    ctx.fillStyle = p.color;\n    ctx.beginPath();\n    ctx.arc(p.x, by, p.r, 0, Math.PI*2);\n    ctx.fill();\n    ctx.fillStyle = \'rgba(0,0,0,0.18)\';\n    ctx.beginPath();\n    ctx.arc(p.x - p.r*0.3, by - p.r*0.3, p.r*0.9, 0, Math.PI*2);\n    ctx.fill();\n  }\n\n  for(var s=0;s<stars.length;s++){\n    var st = stars[s];\n    st.y += st.speed*dt;\n    if(st.y > LH){ st.y = -2; st.x = Math.random()*LW; }\n    var tw = 0.5 + 0.5*Math.sin(bgTime*3 + st.tw);\n    ctx.fillStyle = \'rgba(255,255,255,\' + (0.4+0.6*tw) + \')\';\n    ctx.fillRect(st.x, st.y, st.size, st.size);\n  }\n}\n\nvar DIFF = {\n  easy:   { spawn: 1300, speedMul: 1.0, hpMul: 1.0, hp: 5 },\n  medium: { spawn: 950,  speedMul: 1.35, hpMul: 1.5, hp: 4 },\n  hard:   { spawn: 650,  speedMul: 1.75, hpMul: 2.2, hp: 3 },\n};\n\nvar state = \'menu\';\nvar selectedDiff = \'easy\';\n\nvar player, lasers, enemies, particles, coinsThisRun, scoreThisRun;\nvar spawnTimer = 0, fireTimer = 0, lastTime = 0, flameFrame = 0, flameTimer = 0;\nvar moveDir = 0;\n\nvar PS = 6;\nvar APS = 5;\n\nfunction upgradeVal(stat){\n  var lvl = save.upgrades[stat];\n  if(stat === \'fireRate\') return Math.max(120, 420 - lvl*30);\n  if(stat === \'damage\') return 1 + lvl;\n  if(stat === \'speed\') return 210 + lvl*22;\n  return 0;\n}\n\nfunction newPlayer(){\n  var d = DIFF[selectedDiff];\n  return {\n    x: LW/2, y: LH - 90,\n    w: 8*PS, h: 9*PS,\n    hp: d.hp, maxHp: d.hp,\n    model: save.selectedModel,\n  };\n}\n\nfunction startGame(){\n  player = newPlayer();\n  lasers = []; enemies = []; particles = [];\n  coinsThisRun = 0; scoreThisRun = 0;\n  spawnTimer = 0; fireTimer = 0;\n  state = \'playing\';\n  document.getElementById(\'hud\').classList.remove(\'hidden\');\n  document.getElementById(\'controls\').classList.remove(\'hidden\');\n  document.getElementById(\'menu\').classList.add(\'hidden\');\n  document.getElementById(\'pauseScreen\').classList.add(\'hidden\');\n  document.getElementById(\'gameOverScreen\').classList.add(\'hidden\');\n  updateHud();\n  lastTime = performance.now();\n  requestAnimationFrame(loop);\n}\n\nfunction spawnEnemy(){\n  var d = DIFF[selectedDiff];\n  var isAlien = Math.random() < 0.6;\n  var x = 30 + Math.random()*(LW-60);\n  if(isAlien){\n    enemies.push({\n      type:\'alien\', x: x, y:-30, w:8*APS, h:6*APS,\n      hp: Math.ceil((1+Math.random())*d.hpMul),\n      maxHp: Math.ceil((1+Math.random())*d.hpMul),\n      speed: (55+Math.random()*35)*d.speedMul,\n      sineBase: x, sineT: Math.random()*Math.PI*2,\n      coin: 6, score: 10,\n      variant: Math.random()<0.5 ? 0 : 1,\n    });\n  } else {\n    var size = 20 + Math.random()*18;\n    enemies.push({\n      type:\'meteor\', x: x, y:-40, w:size, h:size,\n      hp: Math.ceil((2+Math.random()*2)*d.hpMul),\n      maxHp: Math.ceil((2+Math.random()*2)*d.hpMul),\n      speed: (40+Math.random()*25)*d.speedMul,\n      rot: Math.random()*Math.PI*2, rotSpeed: (Math.random()-0.5)*2,\n      coin: 4, score: 6,\n      craters: [[0.3,0.3,0.2],[0.6,0.5,0.15],[0.4,0.7,0.18]],\n    });\n  }\n}\n\nfunction fireLaser(){\n  var dmg = upgradeVal(\'damage\');\n  lasers.push({ x: player.x, y: player.y - 10, w:4, h:14, speed:420, dmg: dmg });\n  lasers.push({ x: player.x-14, y: player.y - 2, w:3, h:12, speed:420, dmg: Math.max(1,Math.floor(dmg*0.6)) });\n  lasers.push({ x: player.x+14, y: player.y - 2, w:3, h:12, speed:420, dmg: Math.max(1,Math.floor(dmg*0.6)) });\n}\n\nfunction spawnExplosion(x,y,color){\n  for(var i=0;i<10;i++){\n    particles.push({\n      x: x, y: y, vx:(Math.random()-0.5)*160, vy:(Math.random()-0.5)*160,\n      life: 0.4+Math.random()*0.3, age:0, color: color, size: 3+Math.random()*3\n    });\n  }\n}\n\nfunction updateHud(){\n  document.getElementById(\'hudCoins\').textContent = save.coins + coinsThisRun;\n  document.getElementById(\'hudScore\').textContent = scoreThisRun;\n  document.getElementById(\'hpfill\').style.width = Math.max(0,(player.hp/player.maxHp*100)) + \'%\';\n}\n\nfunction endGame(){\n  state = \'gameover\';\n  save.coins += coinsThisRun;\n  if(scoreThisRun > save.highScore) save.highScore = scoreThisRun;\n  persist();\n  document.getElementById(\'finalScore\').textContent = scoreThisRun;\n  document.getElementById(\'finalCoins\').textContent = coinsThisRun;\n  document.getElementById(\'hud\').classList.add(\'hidden\');\n  document.getElementById(\'controls\').classList.add(\'hidden\');\n  document.getElementById(\'gameOverScreen\').classList.remove(\'hidden\');\n}\n\nfunction loop(now){\n  if(state !== \'playing\'){ return; }\n  var dt = (now - lastTime)/1000;\n  if(dt > 0.05) dt = 0.05;\n  lastTime = now;\n\n  drawBackground(dt);\n\n  flameTimer += dt;\n  if(flameTimer > 0.12){ flameTimer = 0; flameFrame = 1 - flameFrame; }\n\n  var spd = upgradeVal(\'speed\');\n  player.x += moveDir * spd * dt;\n  var half = player.w/2;\n  if(player.x < half+6) player.x = half+6;\n  if(player.x > LW-half-6) player.x = LW-half-6;\n\n  fireTimer += dt*1000;\n  var interval = upgradeVal(\'fireRate\');\n  if(fireTimer >= interval){\n    fireTimer = 0;\n    fireLaser();\n  }\n\n  spawnTimer += dt*1000;\n  if(spawnTimer >= DIFF[selectedDiff].spawn){\n    spawnTimer = 0;\n    spawnEnemy();\n  }\n\n  for(var li=lasers.length-1;li>=0;li--){\n    var l = lasers[li];\n    l.y -= l.speed*dt;\n    if(l.y < -20) lasers.splice(li,1);\n  }\n\n  for(var ei=enemies.length-1;ei>=0;ei--){\n    var e = enemies[ei];\n    e.y += e.speed*dt;\n    if(e.type===\'alien\'){\n      e.sineT += dt*2;\n      e.x = e.sineBase + Math.sin(e.sineT)*30;\n    } else {\n      e.rot += e.rotSpeed*dt;\n    }\n    if(e.y - e.h/2 > LH){\n      enemies.splice(ei,1);\n      continue;\n    }\n    var dx = Math.abs(e.x - player.x), dy = Math.abs(e.y - (player.y-player.h*0.2));\n    if(dx < (e.w/2 + player.w*0.32) && dy < (e.h/2 + player.h*0.4)){\n      player.hp -= 1;\n      spawnExplosion(e.x,e.y, e.type===\'alien\' ? \'#5df58a\' : \'#c98a4d\');\n      enemies.splice(ei,1);\n      if(player.hp <= 0){\n        spawnExplosion(player.x, player.y, \'#7ef7ff\');\n        endGame();\n        return;\n      }\n      continue;\n    }\n  }\n\n  for(var li2=lasers.length-1;li2>=0;li2--){\n    var l2 = lasers[li2];\n    for(var ej=enemies.length-1;ej>=0;ej--){\n      var e2 = enemies[ej];\n      if(Math.abs(l2.x - e2.x) < e2.w/2+4 && Math.abs(l2.y - e2.y) < e2.h/2+6){\n        e2.hp -= l2.dmg;\n        lasers.splice(li2,1);\n        if(e2.hp <= 0){\n          spawnExplosion(e2.x, e2.y, e2.type===\'alien\' ? \'#5df58a\' : \'#c98a4d\');\n          coinsThisRun += e2.coin;\n          scoreThisRun += e2.score;\n          enemies.splice(ej,1);\n        }\n        break;\n      }\n    }\n  }\n\n  for(var pi=particles.length-1;pi>=0;pi--){\n    var p = particles[pi];\n    p.age += dt;\n    if(p.age > p.life){ particles.splice(pi,1); continue; }\n    p.x += p.vx*dt; p.y += p.vy*dt;\n  }\n\n  render();\n  updateHud();\n  requestAnimationFrame(loop);\n}\n\nfunction render(){\n  for(var li=0;li<lasers.length;li++){\n    var l = lasers[li];\n    var grd = ctx.createLinearGradient(l.x,l.y-l.h/2,l.x,l.y+l.h/2);\n    grd.addColorStop(0,\'#ffffff\');\n    grd.addColorStop(1,\'#00e5ff\');\n    ctx.fillStyle = grd;\n    ctx.fillRect(l.x-l.w/2, l.y-l.h/2, l.w, l.h);\n  }\n\n  for(var ei=0;ei<enemies.length;ei++){\n    var e = enemies[ei];\n    if(e.type===\'alien\'){\n      var cmap = e.variant===0 ? ALIEN_COLORS : ALIEN_COLORS2;\n      var sz = spriteSize(ALIEN_PATTERN, APS);\n      drawSprite(ctx, ALIEN_PATTERN, cmap, e.x - sz.w/2, e.y - sz.h/2, APS);\n      drawHpBar(e.x, e.y - sz.h/2 - 8, sz.w, e.hp, e.maxHp, \'#5df58a\');\n    } else {\n      ctx.save();\n      ctx.translate(e.x, e.y);\n      ctx.rotate(e.rot);\n      ctx.fillStyle = \'#8a6a4d\';\n      ctx.beginPath();\n      ctx.arc(0,0,e.w/2,0,Math.PI*2);\n      ctx.fill();\n      ctx.fillStyle = \'#5c4530\';\n      for(var ci=0;ci<e.craters.length;ci++){\n        var c = e.craters[ci];\n        ctx.beginPath();\n        ctx.arc((c[0]-0.5)*e.w, (c[1]-0.5)*e.h, e.w*c[2]*0.5, 0, Math.PI*2);\n        ctx.fill();\n      }\n      ctx.restore();\n      drawHpBar(e.x, e.y - e.h/2 - 8, e.w, e.hp, e.maxHp, \'#c98a4d\');\n    }\n  }\n\n  for(var pi=0;pi<particles.length;pi++){\n    var p = particles[pi];\n    var a = 1 - p.age/p.life;\n    ctx.fillStyle = p.color;\n    ctx.globalAlpha = Math.max(0,a);\n    ctx.fillRect(p.x-p.size/2, p.y-p.size/2, p.size, p.size);\n  }\n  ctx.globalAlpha = 1;\n\n  var model = ROCKET_MODELS[player.model];\n  var pattern = model.body.slice();\n  var cmap = flameFrame ? model.flameAlt : model.colors;\n  var sz = spriteSize(pattern, PS);\n  ctx.fillStyle = \'rgba(126,247,255,0.25)\';\n  ctx.beginPath();\n  ctx.ellipse(player.x, player.y + sz.h/2, 16, 8, 0, 0, Math.PI*2);\n  ctx.fill();\n  drawSprite(ctx, pattern, cmap, player.x - sz.w/2, player.y - sz.h/2, PS);\n}\n\nfunction drawHpBar(cx, y, w, hp, maxHp, color){\n  if(hp>=maxHp) return;\n  var bw = Math.max(20,w);\n  ctx.fillStyle = \'rgba(0,0,0,0.6)\';\n  ctx.fillRect(cx-bw/2, y, bw, 4);\n  ctx.fillStyle = color;\n  ctx.fillRect(cx-bw/2, y, bw*Math.max(0,hp/maxHp), 4);\n}\n\nvar menuRafId = null;\nfunction menuLoop(now){\n  if(state === \'menu\' || state === \'shop\'){\n    var dt = lastTime ? (now-lastTime)/1000 : 0.016;\n    if(dt>0.05) dt=0.05;\n    lastTime = now;\n    drawBackground(dt);\n    if(state===\'menu\'){\n      flameTimer += dt;\n      if(flameTimer>0.15){flameTimer=0; flameFrame=1-flameFrame;}\n      var model = ROCKET_MODELS[save.selectedModel];\n      var cmap = flameFrame ? model.flameAlt : model.colors;\n      var sz = spriteSize(model.body, PS*1.6);\n      var bob = Math.sin(now/400)*6;\n      drawSprite(ctx, model.body, cmap, LW/2 - sz.w/2, LH*0.68 - sz.h/2 + bob, PS*1.6);\n    }\n    menuRafId = requestAnimationFrame(menuLoop);\n  } else {\n    menuRafId = null;\n  }\n}\nfunction ensureMenuLoop(){\n  if(menuRafId===null){ lastTime = performance.now(); menuRafId = requestAnimationFrame(menuLoop); }\n}\n\nfunction refreshMenuUI(){\n  document.getElementById(\'menuCoins\').textContent = save.coins;\n  document.getElementById(\'menuHigh\').textContent = save.highScore;\n}\n\nvar diffBtns = document.querySelectorAll(\'.diffbtn\');\nfor(var db=0;db<diffBtns.length;db++){\n  var btn = diffBtns[db];\n  btn.addEventListener(\'click\', (function(b){\n    return function(){\n      var all = document.querySelectorAll(\'.diffbtn\');\n      for(var a=0;a<all.length;a++) all[a].classList.remove(\'sel\');\n      b.classList.add(\'sel\');\n      selectedDiff = b.dataset.diff;\n      save.difficulty = selectedDiff;\n      persist();\n    };\n  })(btn));\n}\n\ndocument.getElementById(\'startBtn\').addEventListener(\'click\', startGame);\n\ndocument.getElementById(\'pauseBtn\').addEventListener(\'click\', function(){\n  state = \'paused\';\n  document.getElementById(\'pauseScreen\').classList.remove(\'hidden\');\n});\ndocument.getElementById(\'resumeBtn\').addEventListener(\'click\', function(){\n  state = \'playing\';\n  document.getElementById(\'pauseScreen\').classList.add(\'hidden\');\n  lastTime = performance.now();\n  requestAnimationFrame(loop);\n});\ndocument.getElementById(\'quitBtn\').addEventListener(\'click\', function(){\n  state = \'menu\';\n  document.getElementById(\'hud\').classList.add(\'hidden\');\n  document.getElementById(\'controls\').classList.add(\'hidden\');\n  document.getElementById(\'pauseScreen\').classList.add(\'hidden\');\n  document.getElementById(\'gameOverScreen\').classList.add(\'hidden\');\n  document.getElementById(\'menu\').classList.remove(\'hidden\');\n  refreshMenuUI();\n  ensureMenuLoop();\n});\ndocument.getElementById(\'retryBtn\').addEventListener(\'click\', startGame);\ndocument.getElementById(\'goMenuBtn\').addEventListener(\'click\', function(){\n  state=\'menu\';\n  document.getElementById(\'gameOverScreen\').classList.add(\'hidden\');\n  document.getElementById(\'menu\').classList.remove(\'hidden\');\n  refreshMenuUI();\n  ensureMenuLoop();\n});\n\nvar btnLeft = document.getElementById(\'btnLeft\');\nvar btnRight = document.getElementById(\'btnRight\');\nfunction bindHold(el, onDown, onUp){\n  el.addEventListener(\'touchstart\', function(e){e.preventDefault(); onDown();}, {passive:false});\n  el.addEventListener(\'touchend\', function(e){e.preventDefault(); onUp();}, {passive:false});\n  el.addEventListener(\'touchcancel\', onUp);\n  el.addEventListener(\'mousedown\', onDown);\n  el.addEventListener(\'mouseup\', onUp);\n  el.addEventListener(\'mouseleave\', onUp);\n}\nbindHold(btnLeft, function(){moveDir=-1; btnLeft.classList.add(\'active\');}, function(){if(moveDir===-1)moveDir=0; btnLeft.classList.remove(\'active\');});\nbindHold(btnRight, function(){moveDir=1; btnRight.classList.add(\'active\');}, function(){if(moveDir===1)moveDir=0; btnRight.classList.remove(\'active\');});\ndocument.getElementById(\'btnBomb\').addEventListener(\'click\', function(){\n  if(state!==\'playing\') return;\n  for(var ei=enemies.length-1;ei>=0;ei--){ spawnExplosion(enemies[ei].x, enemies[ei].y, enemies[ei].type===\'alien\' ? \'#5df58a\' : \'#c98a4d\'); }\n});\n\nvar UPGRADE_DEFS = [\n  { key:\'fireRate\', label:\'KECEPATAN TEMBAK\', desc:\'Roket menembak lebih sering\', baseCost:20 },\n  { key:\'damage\', label:\'DAYA LEDAK LASER\', desc:\'Laser lebih kuat per tembakan\', baseCost:25 },\n  { key:\'speed\', label:\'KECEPATAN GERAK\', desc:\'Roket bergerak lebih cepat\', baseCost:18 },\n];\nfunction costFor(base, level){ return Math.round(base * Math.pow(level+1, 1.6)); }\n\nfunction renderShop(){\n  document.getElementById(\'shopCoins\').textContent = save.coins;\n  var panel = document.getElementById(\'upgradePanel\');\n  panel.innerHTML = \'\';\n  for(var ud=0;ud<UPGRADE_DEFS.length;ud++){\n    var def = UPGRADE_DEFS[ud];\n    var lvl = save.upgrades[def.key];\n    var cost = costFor(def.baseCost, lvl);\n    var div = document.createElement(\'div\');\n    div.className = \'shopitem\';\n    div.innerHTML = \'<div class="info"><div class="lvl">\' + def.label + \' · Lv \' + lvl + \'</div><div class="desc">\' + def.desc + \'</div></div><button class="btn small" data-key="\' + def.key + \'">🪙\' + cost + \'</button>\';\n    panel.appendChild(div);\n    div.querySelector(\'button\').addEventListener(\'click\', (function(k, c){\n      return function(){\n        if(save.coins >= c){\n          save.coins -= c;\n          save.upgrades[k] += 1;\n          persist();\n          renderShop();\n          refreshMenuUI();\n        }\n      };\n    })(def.key, cost));\n  }\n\n  var modelPanel = document.getElementById(\'modelPanel\');\n  modelPanel.innerHTML = \'\';\n  for(var mi=0;mi<ROCKET_MODELS.length;mi++){\n    var m = ROCKET_MODELS[mi];\n    var unlocked = save.unlockedModels.indexOf(mi) !== -1;\n    var card = document.createElement(\'div\');\n    card.className = \'modelcard\' + (save.selectedModel===mi ? \' sel\' : \'\');\n    var cvs = document.createElement(\'canvas\');\n    var sz = spriteSize(m.body, 6);\n    cvs.width = sz.w; cvs.height = sz.h;\n    var cctx = cvs.getContext(\'2d\');\n    cctx.imageSmoothingEnabled = false;\n    drawSprite(cctx, m.body, m.colors, 0, 0, 6);\n    card.appendChild(cvs);\n    var name = document.createElement(\'div\');\n    name.className = \'name\'; name.textContent = m.name;\n    card.appendChild(name);\n    var actionBtn = document.createElement(\'button\');\n    actionBtn.className = \'btn small\';\n    if(unlocked){\n      actionBtn.textContent = save.selectedModel===mi ? \'DIPAKAI\' : \'PAKAI\';\n      actionBtn.disabled = save.selectedModel===mi;\n      actionBtn.addEventListener(\'click\', (function(idx){\n        return function(){ save.selectedModel = idx; persist(); renderShop(); };\n      })(mi));\n    } else {\n      actionBtn.textContent = \'🪙\' + m.cost;\n      actionBtn.classList.add(\'gold\');\n      actionBtn.addEventListener(\'click\', (function(idx){\n        return function(){\n          if(save.coins >= ROCKET_MODELS[idx].cost){\n            save.coins -= ROCKET_MODELS[idx].cost;\n            save.unlockedModels.push(idx);\n            save.selectedModel = idx;\n            persist(); renderShop(); refreshMenuUI();\n          }\n        };\n      })(mi));\n    }\n    card.appendChild(actionBtn);\n    modelPanel.appendChild(card);\n  }\n}\n\ndocument.getElementById(\'tabUpgrade\').addEventListener(\'click\', function(){\n  document.getElementById(\'tabUpgrade\').classList.add(\'active\');\n  document.getElementById(\'tabModel\').classList.remove(\'active\');\n  document.getElementById(\'upgradePanel\').classList.remove(\'hidden\');\n  document.getElementById(\'modelPanel\').classList.add(\'hidden\');\n});\ndocument.getElementById(\'tabModel\').addEventListener(\'click\', function(){\n  document.getElementById(\'tabModel\').classList.add(\'active\');\n  document.getElementById(\'tabUpgrade\').classList.remove(\'active\');\n  document.getElementById(\'modelPanel\').classList.remove(\'hidden\');\n  document.getElementById(\'upgradePanel\').classList.add(\'hidden\');\n});\n\nfunction openShop(){\n  state = \'shop\';\n  renderShop();\n  document.getElementById(\'shop\').classList.remove(\'hidden\');\n  document.getElementById(\'menu\').classList.add(\'hidden\');\n  ensureMenuLoop();\n}\ndocument.getElementById(\'shopBtnMenu\').addEventListener(\'click\', openShop);\ndocument.getElementById(\'pauseShopBtn\').addEventListener(\'click\', openShop);\ndocument.getElementById(\'goShopBtn\').addEventListener(\'click\', openShop);\ndocument.getElementById(\'shopBackBtn\').addEventListener(\'click\', function(){\n  state = \'menu\';\n  document.getElementById(\'shop\').classList.add(\'hidden\');\n  document.getElementById(\'menu\').classList.remove(\'hidden\');\n  refreshMenuUI();\n});\n\ninitStars();\nloadSave();\nselectedDiff = save.difficulty || \'easy\';\nvar allDiff = document.querySelectorAll(\'.diffbtn\');\nfor(var ad=0;ad<allDiff.length;ad++){\n  allDiff[ad].classList.toggle(\'sel\', allDiff[ad].dataset.diff===selectedDiff);\n}\nrefreshMenuUI();\nensureMenuLoop();\n\n})();\n<\/script>\n</body>\n</html>';
+
+            var TOTAL_QUIZ = 5;
+            var sessionQuiz = [];
+            var quizLevel = 0;
+            var waitingForNext = false;
+            var isActive = false;
+            var firstTryCorrectCount = 0;
+            var usedExtraAttempt = false;
+
+            function setTreeStage(n) {
+                treeWidget.className = 'tree-widget tw-stage-' + n;
+                treeLabel.textContent = treeStages[n];
+                treeWidget.setAttribute('aria-label', 'Pohon Harapan: ' + treeStages[n].toLowerCase());
+                treeWidget.classList.remove('pulse');
+                void treeWidget.offsetWidth;
+                treeWidget.classList.add('pulse');
+            }
+
+            function shuffle(arr) {
+                var a = arr.slice();
+                for (var i = a.length - 1; i > 0; i--) {
+                    var j = Math.floor(Math.random() * (i + 1));
+                    var temp = a[i];
+                    a[i] = a[j];
+                    a[j] = temp;
+                }
+                return a;
+            }
+
+            var planetInfo = {
+                Merkurius: { fact: 'Planet terdekat dengan Matahari.', color: '#b3aca5' },
+                Venus:     { fact: 'Planet terpanas di tata surya.', color: '#e8c39e' },
+                Bumi:      { fact: 'Satu-satunya planet dengan kehidupan.', color: '#2e6fb0' },
+                Mars:      { fact: 'Dijuluki "Planet Merah".', color: '#c1552e' },
+                Jupiter:   { fact: 'Planet terbesar di tata surya.', color: '#b98b5e' },
+                Saturnus:  { fact: 'Terkenal dengan cincinnya yang indah.', color: '#c9a86a' },
+                Uranus:    { fact: 'Berputar miring hampir menyamping.', color: '#9fe3e3' },
+                Neptunus:  { fact: 'Planet terjauh dari Matahari.', color: '#4166b0' },
+                Matahari:  { fact: 'Bintang pusat tata surya kita.', color: '#F5C542' }
+            };
+
+            function initStars() {
+                if (tsStars.childElementCount) return;
+                for (var i = 0; i < 26; i++) {
+                    var s = document.createElement('span');
+                    s.className = 'ts-star';
+                    s.style.top = Math.random() * 100 + '%';
+                    s.style.left = Math.random() * 100 + '%';
+                    s.style.animationDelay = (Math.random() * 2.4) + 's';
+                    tsStars.appendChild(s);
+                }
+            }
+
+            function initLegend() {
+                if (tsLegend.childElementCount) return;
+                var order = ['Matahari', 'Merkurius', 'Venus', 'Bumi', 'Mars', 'Jupiter', 'Saturnus', 'Uranus', 'Neptunus'];
+                for (var i = 0; i < order.length; i++) {
+                    var name = order[i];
+                    var item = document.createElement('div');
+                    item.className = 'ts-legend-item';
+                    item.innerHTML = '<span class="ts-legend-dot" style="background:' + planetInfo[name].color + '"></span>' + name;
+                    tsLegend.appendChild(item);
+                }
+            }
+
+            function initPlanetTaps() {
+                var planets = document.querySelectorAll('.ts-planet');
+                for (var i = 0; i < planets.length; i++) {
+                    var p = planets[i];
+                    var activate = (function(name) {
+                        return function() { showPlanetCaption(name); };
+                    })(p.dataset.name);
+                    p.addEventListener('click', activate);
+                    p.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.click(); } });
+                }
+                var sunActivate = function() { showPlanetCaption('Matahari'); };
+                tsSun.addEventListener('click', sunActivate);
+                tsSun.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); sunActivate(); } });
+            }
+
+            function showPlanetCaption(name) {
+                var info = planetInfo[name];
+                tsCaption.textContent = name + ' — ' + info.fact;
+                tsCaption.style.color = info.color;
+                reveal(tsCaption, 'anim-pop');
+            }
+
+            function initTataSurya() {
+                initStars();
+                initLegend();
+                initPlanetTaps();
+            }
+
+            var quizPool = [
+                {
+                    subtitle: 'Klik gambar yang menunjukkan objek luar angkasa!',
+                    type: 'image',
+                    options: [
+                        { name: 'Pilihan A', img: 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=300&h=220&fit=crop&auto=format', correct: true },
+                        { name: 'Pilihan B', img: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=300&h=220&fit=crop&auto=format', correct: false },
+                        { name: 'Pilihan C', img: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=300&h=220&fit=crop&auto=format', correct: false }
+                    ]
+                },
+                {
+                    subtitle: 'Klik gambar yang Terkait Pada Luar Angkasa!',
+                    type: 'image',
+                    options: [
+                        { name: 'Pilihan A', img: 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?w=300&h=220&fit=crop&auto=format', correct: true },
+                        { name: 'Pilihan B', img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=300&h=220&fit=crop&auto=format', correct: false },
+                        { name: 'Pilihan C', img: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=300&h=220&fit=crop&auto=format', correct: false }
+                    ]
+                },
+                {
+                    subtitle: 'Apa nama planet terbesar di tata surya?',
+                    type: 'abcd',
+                    options: [
+                        { letter: 'A', text: 'Saturnus', correct: false },
+                        { letter: 'B', text: 'Jupiter', correct: true },
+                        { letter: 'C', text: 'Mars', correct: false },
+                        { letter: 'D', text: 'Venus', correct: false }
+                    ]
+                },
+                {
+                    subtitle: 'Apa nama satelit alami Bumi?',
+                    type: 'abcd',
+                    options: [
+                        { letter: 'A', text: 'Phobos', correct: false },
+                        { letter: 'B', text: 'Deimos', correct: false },
+                        { letter: 'C', text: 'Bulan', correct: true },
+                        { letter: 'D', text: 'Titan', correct: false }
+                    ]
+                },
+                {
+                    subtitle: 'Planet mana yang dikenal sebagai "Planet Merah"?',
+                    type: 'abcd',
+                    options: [
+                        { letter: 'A', text: 'Mars', correct: true },
+                        { letter: 'B', text: 'Neptunus', correct: false },
+                        { letter: 'C', text: 'Uranus', correct: false },
+                        { letter: 'D', text: 'Merkurius', correct: false }
+                    ]
+                },
+                {
+                    subtitle: 'Apa nama galaksi tempat tata surya kita berada?',
+                    type: 'abcd',
+                    options: [
+                        { letter: 'A', text: 'Bima Sakti', correct: true },
+                        { letter: 'B', text: 'Andromeda', correct: false },
+                        { letter: 'C', text: 'Sombrero', correct: false },
+                        { letter: 'D', text: 'Cincin Selatan', correct: false }
+                    ]
+                },
+                {
+                    subtitle: 'Siapa astronot pertama yang mendarat di Bulan?',
+                    type: 'abcd',
+                    options: [
+                        { letter: 'A', text: 'Buzz Aldrin', correct: false },
+                        { letter: 'B', text: 'Neil Armstrong', correct: true },
+                        { letter: 'C', text: 'Yuri Gagarin', correct: false },
+                        { letter: 'D', text: 'John Glenn', correct: false }
+                    ]
+                },
+                {
+                    subtitle: 'Apa nama misi luar angkasa yang berhasil membawa manusia ke Bulan?',
+                    type: 'abcd',
+                    options: [
+                        { letter: 'A', text: 'Apollo 11', correct: true },
+                        { letter: 'B', text: 'Sputnik 1', correct: false },
+                        { letter: 'C', text: 'Voyager 1', correct: false },
+                        { letter: 'D', text: 'Hubble', correct: false }
+                    ]
+                }
+            ];
+
+            function buildSessionQuiz() {
+                var picked = shuffle(quizPool).slice(0, TOTAL_QUIZ);
+                var result = [];
+                for (var i = 0; i < picked.length; i++) {
+                    var q = picked[i];
+                    var opts = shuffle(q.options);
+                    if (q.type === 'abcd') {
+                        var letters = ['A', 'B', 'C', 'D'];
+                        for (var oi = 0; oi < opts.length; oi++) {
+                            opts[oi].letter = letters[oi];
+                        }
+                    }
+                    result.push({
+                        title: '🪐 Soal ' + (i + 1),
+                        subtitle: q.subtitle,
+                        type: q.type,
+                        options: opts
+                    });
+                }
+                return result;
+            }
+
+            function showScreen(screen) {
+                var screens = [intro, menuScreen, materiScreen, tsScreen, quizScreen, completeScreen, gameScreen];
+                for (var i = 0; i < screens.length; i++) {
+                    screens[i].style.display = 'none';
+                }
+                if (screen) screen.style.display = 'flex';
+            }
+
+            function loadQuiz(level) {
+                if (level >= sessionQuiz.length) { showComplete(); return; }
+                var data = sessionQuiz[level];
+                quizTitle.textContent = data.title;
+                quizSubheader.textContent = data.subtitle;
+                quizGrid.innerHTML = '';
+                notif.className = 'notif';
+                notif.textContent = 'Pilih salah satu';
+                btnNext.classList.remove('show');
+                waitingForNext = false;
+                isActive = true;
+                usedExtraAttempt = false;
+
+                var els = [];
+                for (var oi = 0; oi < data.options.length; oi++) {
+                    var opt = data.options[oi];
+                    var div = document.createElement('div');
+                    div.className = 'quiz-item';
+                    div.setAttribute('role', 'button');
+                    div.setAttribute('tabindex', '0');
+
+                    if (data.type === 'abcd') {
+                        div.classList.add('option-abcd');
+                        div.setAttribute('aria-label', opt.letter + '. ' + opt.text);
+                        div.innerHTML = '<span class="letter">' + opt.letter + '</span><span class="text">' + opt.text + '</span>';
+                    } else {
+                        div.setAttribute('aria-label', opt.name);
+                        div.innerHTML = '<img src="' + opt.img + '" alt="' + opt.name + '" loading="lazy" onerror="this.style.display=\'none\';this.insertAdjacentHTML(\'afterend\',\'<div style=\\\'width:100%;height:112px;border-radius:12px;background:var(--paper-deep);display:flex;align-items:center;justify-content:center;color:#556688;font-size:0.8rem;\\\'>Gambar tidak tersedia</div>\')" /><span class="item-name">' + opt.name + '</span>';
+                    }
+
+                    var activate = (function(el, optData) {
+                        return function() { handleQuizAnswer(el, optData); };
+                    })(div, opt);
+                    div.addEventListener('click', activate);
+                    div.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.click(); }
+                    });
+
+                    quizGrid.appendChild(div);
+                    els.push(div);
+                }
+
+                revealStagger(els, 'anim-in', 80);
+                updateProgressDots(level);
+            }
+
+            function handleQuizAnswer(element, selected) {
+                if (!isActive || waitingForNext) return;
+                var items = document.querySelectorAll('.quiz-item');
+                for (var i = 0; i < items.length; i++) items[i].classList.add('disabled');
+
+                if (selected.correct) {
+                    element.classList.add('correct-flash');
+                    notif.className = 'notif benar';
+                    notif.innerHTML = '✅ Benar! 🚀';
+                    if (!usedExtraAttempt) firstTryCorrectCount++;
+                    fireConfetti(900);
+                    waitingForNext = true;
+                    btnNext.classList.add('show');
+                    isActive = false;
+                    setTreeStage(Math.min(3, quizLevel + 1));
+                } else {
+                    usedExtraAttempt = true;
+                    element.classList.add('wrong-flash');
+                    notif.className = 'notif salah';
+                    notif.innerHTML = '❌ Salah! Coba lagi. 💫';
+                    setTimeout(function() {
+                        var items2 = document.querySelectorAll('.quiz-item');
+                        for (var j = 0; j < items2.length; j++) {
+                            items2[j].classList.remove('disabled', 'wrong-flash');
+                        }
+                        isActive = true;
+                        notif.className = 'notif';
+                        notif.textContent = 'Pilih salah satu';
+                    }, 900);
+                }
+            }
+
+            btnNext.addEventListener('click', function() {
+                if (!waitingForNext) return;
+                waitingForNext = false;
+                btnNext.classList.remove('show');
+                quizLevel++;
+                loadQuiz(quizLevel);
+            });
+
+            function updateProgressDots(level) {
+                progressDots.innerHTML = '';
+                for (var i = 0; i < sessionQuiz.length; i++) {
+                    var dot = document.createElement('span');
+                    dot.className = 'progress-dot';
+                    if (i < level) dot.classList.add('completed');
+                    else if (i === level) dot.classList.add('active');
+                    progressDots.appendChild(dot);
+                }
+            }
+
+            function showComplete() {
+                quizScreen.style.display = 'none';
+                completeScreen.style.display = 'flex';
+                scoreChip.textContent = 'SKOR: ' + firstTryCorrectCount + '/' + sessionQuiz.length + ' percobaan pertama benar';
+                fireConfetti(2400);
+                reveal(document.querySelector('.complete-icon'), 'anim-bounce');
+                var h2 = completeScreen.querySelector('h2');
+                var p = completeScreen.querySelector('p');
+                h2.style.animationDelay = '150ms'; reveal(h2, 'anim-in');
+                p.style.animationDelay = '280ms'; reveal(p, 'anim-in');
+                scoreChip.style.animationDelay = '400ms'; reveal(scoreChip, 'anim-in');
+                btnRetry.style.animationDelay = '520ms'; reveal(btnRetry, 'anim-pop');
+            }
+
+            function resetAll() {
+                sessionQuiz = [];
+                quizLevel = 0;
+                waitingForNext = false;
+                isActive = false;
+                firstTryCorrectCount = 0;
+                setTreeStage(0);
+                showScreen(intro);
+                reveal(document.querySelector('.intro-title'), 'anim-in');
+                var it = document.querySelector('.intro-text'); it.style.animationDelay = '100ms'; reveal(it, 'anim-in');
+                btnMulai.style.animationDelay = '250ms'; reveal(btnMulai, 'anim-pop');
+                dropdownMenu.classList.remove('show');
+                gameFrame.src = '';
+            }
+
+            var musicPlaying = false;
+            var hasEntered = false;
+
+            function tryPlayMusic() {
+                audio.play().then(function() {
+                    musicPlaying = true;
+                    musicStatus.textContent = 'Memutar…';
+                    musicIndicator.classList.add('playing');
+                }).catch(function() {
+                    musicPlaying = false;
+                    musicStatus.textContent = 'Klik untuk putar musik';
+                    musicIndicator.classList.remove('playing');
+                });
+            }
+
+            btnMasuk.addEventListener('click', function() {
+                if (hasEntered) return;
+                hasEntered = true;
+
+                loading.style.display = 'none';
+                intro.style.display = 'flex';
+                reveal(document.querySelector('.intro-title'), 'anim-in');
+                var it = document.querySelector('.intro-text');
+                it.style.animationDelay = '100ms';
+                reveal(it, 'anim-in');
+                btnMulai.style.animationDelay = '250ms';
+                reveal(btnMulai, 'anim-pop');
+
+                tryPlayMusic();
+                progressFill.style.width = '100%';
+            });
+
+            btnMulai.addEventListener('click', function() {
+                showScreen(menuScreen);
+                reveal(document.querySelector('.menu-title'), 'anim-in-down');
+                var cards = document.querySelectorAll('.menu-card');
+                revealStagger(cards, 'anim-pop', 100);
+                btnBackFromMenu.style.animationDelay = '320ms'; reveal(btnBackFromMenu, 'anim-in');
+            });
+
+            function openMenuItem(menu) {
+                if (menu === 'penjelasan') {
+                    showScreen(materiScreen);
+                    materiTitle.textContent = '🪐 Mengapa Harus Menjelajah Luar Angkasa?';
+                    materiBody.innerHTML = '<p>Menjelajah luar angkasa penting karena:</p><ul><li>Membuka wawasan tentang alam semesta dan asal-usul kehidupan</li><li>Menemukan planet baru yang mungkin layak huni</li><li>Mengembangkan teknologi canggih yang bermanfaat bagi kehidupan di Bumi</li><li>Mempelajari fenomena alam seperti lubang hitam dan supernova</li><li>Menginspirasi generasi muda untuk mengejar sains dan teknologi</li><li>Mempersiapkan masa depan eksplorasi antariksa manusia</li></ul>';
+                    reveal(document.querySelector('.materi-box'), 'anim-in');
+                    btnBackFromMateri.style.animationDelay = '150ms'; reveal(btnBackFromMateri, 'anim-in');
+                } else if (menu === 'caramenjaga') {
+                    showScreen(materiScreen);
+                    materiTitle.textContent = '🔭 Cara Menjelajah Luar Angkasa';
+                    materiBody.innerHTML = '<p>Berikut cara-cara menjelajah luar angkasa:</p><ul><li>Menggunakan teleskop untuk mengamati bintang dan planet</li><li>Mempelajari teknologi roket dan wahana antariksa</li><li>Mengikuti perkembangan misi luar angkasa seperti Artemis dan Mars Rover</li><li>Bergabung dengan komunitas astronomi amatir</li><li>Membaca buku dan menonton dokumenter tentang antariksa</li><li>Bermimpi dan merencanakan karir di bidang aerospace</li><li>Menjaga Bumi sebagai rumah kita sambil menjelajah langit</li></ul>';
+                    reveal(document.querySelector('.materi-box'), 'anim-in');
+                    btnBackFromMateri.style.animationDelay = '150ms'; reveal(btnBackFromMateri, 'anim-in');
+                } else if (menu === 'tatasurya') {
+                    showScreen(tsScreen);
+                    initTataSurya();
+                    reveal(document.getElementById('tsWrap'), 'anim-pop');
+                    tsLegend.style.animationDelay = '150ms'; reveal(tsLegend, 'anim-in');
+                    btnBackFromTs.style.animationDelay = '260ms'; reveal(btnBackFromTs, 'anim-in');
+                } else if (menu === 'quiz') {
+                    sessionQuiz = buildSessionQuiz();
+                    quizLevel = 0;
+                    firstTryCorrectCount = 0;
+                    setTreeStage(0);
+                    showScreen(quizScreen);
+                    loadQuiz(0);
+                } else if (menu === 'game') {
+                    showScreen(gameScreen);
+                    var encoded = encodeURIComponent(GAME_HTML);
+                    gameFrame.src = 'data:text/html;charset=utf-8,' + encoded;
+                    reveal(document.querySelector('.game-wrapper'), 'anim-pop');
+                    gameCloseBtn.style.animationDelay = '150ms'; reveal(gameCloseBtn, 'anim-in');
+                    gameFullscreenBtn.style.animationDelay = '250ms'; reveal(gameFullscreenBtn, 'anim-in');
+                } else if (menu === 'info') {
+                    window.location.href = 'info.html';
+                }
+            }
+
+            var menuCards = document.querySelectorAll('.menu-card');
+            for (var mc = 0; mc < menuCards.length; mc++) {
+                var card = menuCards[mc];
+                card.addEventListener('click', function() { openMenuItem(this.dataset.menu); });
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openMenuItem(this.dataset.menu); }
+                });
+            }
+
+            btnBackFromMenu.addEventListener('click', resetAll);
+
+            btnBackFromMateri.addEventListener('click', function() {
+                showScreen(menuScreen);
+                reveal(document.querySelector('.menu-title'), 'anim-in-down');
+                var cards = document.querySelectorAll('.menu-card');
+                revealStagger(cards, 'anim-pop', 100);
+                btnBackFromMenu.style.animationDelay = '320ms'; reveal(btnBackFromMenu, 'anim-in');
+            });
+
+            btnBackFromTs.addEventListener('click', function() {
+                showScreen(menuScreen);
+                reveal(document.querySelector('.menu-title'), 'anim-in-down');
+                var cards = document.querySelectorAll('.menu-card');
+                revealStagger(cards, 'anim-pop', 100);
+                btnBackFromMenu.style.animationDelay = '320ms'; reveal(btnBackFromMenu, 'anim-in');
+            });
+
+            gameCloseBtn.addEventListener('click', function() {
+                gameFrame.src = '';
+                showScreen(menuScreen);
+                reveal(document.querySelector('.menu-title'), 'anim-in-down');
+                var cards = document.querySelectorAll('.menu-card');
+                revealStagger(cards, 'anim-pop', 100);
+                btnBackFromMenu.style.animationDelay = '320ms'; reveal(btnBackFromMenu, 'anim-in');
+            });
+
+            gameFullscreenBtn.addEventListener('click', function() {
+                var wrapper = document.querySelector('.game-wrapper');
+                if (wrapper.requestFullscreen) {
+                    wrapper.requestFullscreen();
+                } else if (wrapper.webkitRequestFullscreen) {
+                    wrapper.webkitRequestFullscreen();
+                }
+            });
+
+            btnRetry.addEventListener('click', resetAll);
+
+            menuDotsBtn.addEventListener('click', function(e) { e.stopPropagation(); dropdownMenu.classList.toggle('show'); });
+            document.addEventListener('click', function(e) {
+                if (!dropdownMenu.contains(e.target) && e.target !== menuDotsBtn) dropdownMenu.classList.remove('show');
+            });
+
+            audio.volume = 0.22;
+            musicToggle.addEventListener('click', function() {
+                if (musicPlaying) {
+                    audio.pause();
+                    musicPlaying = false;
+                    musicStatus.textContent = 'Musik dijeda';
+                    musicIndicator.classList.remove('playing');
+                } else {
+                    tryPlayMusic();
+                }
+            });
+
+            var progress = 0;
+            var interval = setInterval(function() {
+                progress += Math.random() * 8 + 3;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                }
+                progressFill.style.width = progress + '%';
+            }, 180);
+
+        })();
+    </script>
+
+</body>
+</html>
